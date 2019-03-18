@@ -32,8 +32,6 @@ urlpatterns = [
       
     url(r'^help/$', views.help, name = 'help'),
       
-    url(r'^logout/$', auth_views.logout, name = 'logout'),
-
     url(r'^signup/$', views.signup, name = 'signup'),
 
     url('accounts/', include('django.contrib.auth.urls')),
