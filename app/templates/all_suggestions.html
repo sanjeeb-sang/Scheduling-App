@@ -1,0 +1,72 @@
+{% extends 'base/base.html' %}
+
+{% block main_content %}
+
+
+<div class="mdl-grid" style="min-height: 85%;">
+
+    <style>
+        h6 {
+            padding: 16px;
+            margin-bottom: 0px;
+            margin-top: 0px;
+        }
+    </style>
+
+    <div class="mdl-cell mdl-cell--8-col center">
+
+        <div class="mdl-grid mdl-color--indigo-400 mdl-color-text--white mdl-shadow--4dp center" style="margin-bottom: 16px; padding: 16px; background-color: #EEEEEE;">
+
+            <div class="mdl-cell mdl-cell--8-col">
+                <h3>Suggestions</h3>
+            </div>
+
+            <div class="mdl-cell mdl-cell--4-col" style="padding-top: 16px;">
+
+                <a href="{% url 'suggestions' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Add new</button></a>
+
+                <a href="{% url 'index' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Home Page</button></a>
+
+            </div>
+
+        </div>
+
+
+        {% for suggestion in suggestions %}
+
+        <div class="change-background mdl-color--white mdl-shadow--4dp">
+
+            <h6 style="padding: 8px;" class="mdl-color--blue mdl-color-text--white">
+                <div style="display: inline-block; width: 95%;"><i class="material-icons" style="color: white; font-size: 24px; margin-right: 8px;">account_box</i>{{ suggestion.user_name }}</div>
+                <div style="display: inline-block; width: 3%;"><a href="suggestions/delete/{{ suggestion.id }}"><i class="material-icons" style="color: white; font-size: 36px;">delete_forever</i></a></div>
+            </h6>
+
+
+            <h6><i class="material-icons" style="font-size: 24px; margin-right: 8px;">reorder</i>{{ suggestion.suggestion }}</h6>
+            <h6><i class="material-icons" style="font-size: 24px; margin-right: 8px;">email</i>{{ suggestion.user_email }}</h6>
+            
+            <span></span>
+            <div>
+                <a href="mailto:{{ suggestion.user_email }}">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-color--blue mdl-color-text--white">
+                        <i class="material-icons" style="margin-right: 8px;">email</i>Send Email
+                    </button>
+                </a>
+            </div>
+
+            <hr />
+
+        </div>
+
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+
+

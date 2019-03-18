@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Contact{% endblock %}
+
+
+{% block main_content %}
+<div class="mdl-grid" style="min-height: 85%;">
+
+    <!--Email Card-->
+    <div class="mdl-cell mdl-cell--10-col center">
+
+        <div class="mdl-cell mdl-cell--8-col center mdl-color--white" style="padding: 16px; margin-bottom: 16px;">
+            <h3>Email</h3>
+            <ul style="list-style: none;">
+
+                <li>
+                    <h6>
+                        <a href="mailto:sangras@warhawks.ulm.edu">
+                            <span class="mdl-chip mdl-chip--contact">
+                            <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white"><i class="material-icons">send</i></span>
+                            <span class="mdl-chip__text">Send Email</span>
+                        </span>
+                        </a>
+                    </h6>
+                </li>
+            </ul>
+        </div>
+
+
+        <!--Facebook Card-->
+        <div class="mdl-cell mdl-cell--8-col mdl-cell--1-offset-desktop mdl-color--white" style="padding: 16px; margin-bottom: 16px;">
+            <h3>Facebook:</h3>
+            <ul style="list-style: none;">
+                <li>
+                    <a href="https://www.facebook.com/sanjeeb.sangraula.5" target="_blank">
+                        <span class="mdl-chip mdl-chip--contact">
+                            <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white"><i class="material-icons">account_circle</i></span>
+                            <span class="mdl-chip__text">Facebook Account</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+

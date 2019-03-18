@@ -1,0 +1,137 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+
+{% block main_content %}
+
+<style>
+    h6 {
+        padding: 24px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    td {
+        padding-top: 2px;
+        padding-right: 8px;
+        padding-left: 16px;
+        padding-bottom: 2px;
+    }
+</style>
+
+<div class="mdl-grid" style="min-height: 85%;">
+
+    <div class="mdl-cell mdl-color--purple-50 mdl-shadow--4dp mdl-cell--8-col center" style="padding: 8px;">
+
+        <h3 style="margin-left: 24px;">{{ user.username }}</h3>
+
+        <div class="change-background mdl-grid" style="padding: 16px; margin-bottom: 16px;">
+
+            <div class="mdl-cell mdl-cell--6-col">
+
+                <a style="margin-top: 16px;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--purple mdl-color-text--white" href="{% url 'logout' %}">Log Out</a>
+
+            </div>
+
+            <div class="mdl-cell mdl-cell--6-col">
+
+                <a style="margin-top: 16px;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--purple mdl-color-text--white" href="{% url 'password_reset' %}">Change Password ?</a>
+
+            </div>
+
+        </div>
+
+        <table style="width: 100%; border: 0px;">
+
+            <col width="30%" >
+            <col width="70%" >
+
+            <tr class="change-background">
+                <td>
+                    <h6>Name</h6>
+                </td>
+                <td>
+                    {{ user.first_name }}
+                </td>
+            </tr>
+
+            <tr class="change-background">
+                <td>
+                    <h6>Last Name</h6>
+                </td>
+                <td>
+                    {{ user.last_name }}
+                </td>
+            </tr>
+
+            <tr class="change-background">
+                <td>
+                    <h6>User name</h6>
+                </td>
+                <td>
+                    {{ user.username }}
+                </td>
+            </tr>
+
+            <tr class="change-background">
+                <td>
+                    <h6>Email</h6>
+                </td>
+                <td>
+                    <a class="mdl-color-text--purple" href="mailto:{{ user.email }}">{{ user.email }}<i class="material-icons" style="margin-left: 8px;">send</i></a>
+                </td>
+            </tr>
+
+            <tr class="change-background">
+                <td>
+                    <h6>Is a member</h6>
+                </td>
+                <td>
+                    {{ user.is_staff }}
+                </td>
+            </tr>
+
+            <tr class="change-background">
+                <td>
+                    <h6>Is Active</h6>
+                </td>
+                <td>
+                    {{ user.is_active }}
+                </td>
+            </tr>
+
+            <tr class="change-background">
+                <td>
+                    <h6>Is a superuser</h6>
+                </td>
+                <td>
+                    {{ user.is_superuser }}
+                </td>
+            </tr>
+
+            <tr class="change-background">
+                <td>
+                    <h6>Last Login in</h6>
+                </td>
+                <td>
+                    {{ user.last_login }}
+                </td>
+            </tr>
+
+            <tr class="change-background">
+                <td>
+                    <h6>Date joined</h6>
+                </td>
+                <td>
+                    {{ user.date_joined }}
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

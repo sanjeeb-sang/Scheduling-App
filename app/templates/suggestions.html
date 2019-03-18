@@ -1,0 +1,37 @@
+{% extends 'base/base.html' %}
+
+{% block main_content %}
+
+
+
+<div class="mdl-grid" style="min-height: 80%;">
+
+    <div class="center mdl-cell mdl-cell--6-col mdl-color--white mdl-shadow--4dp" style="padding: 16px;">
+
+        <h3><i class="material-icons" style="margin-right: 8px; font-size: 24px;">input</i>Add a Suggestion</h3>
+
+        <form method="POST" action="{% url 'suggestions' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit" value="Submit" />
+        </form>
+
+        <div style="padding-top: 32px;">
+
+            <h5>Suggestions</h5>
+
+            <a href="{% url 'all_suggestions' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">View All Suggestions</button></a>
+
+            <a href="{% url 'index' %}" style="margin-left: 32px;"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Home Page</button></a>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+
+{% endblock %}
+

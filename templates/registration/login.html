@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Log In{% endblock %}
+
+{% block main_content %}
+
+<div class="mdl-grid" style="min-height: 80%;">
+
+    <div class="mdl-color--white mdl-cell mdl-cell--6-col mdl-shadow--4dp center" style="padding: 16px; padding-top: 0px;">
+
+        <h4><i class="material-icons" style="margin-right: 8px; font-size: 24px; margin-bottom: 16px; color: deepskyblue;">account_box</i>Login</h4>
+
+        {% if next %}
+        {% if user.is_authenticated %}
+        <small style="color: grey">
+            Your account doesn't have access to this page. To proceed,
+            please login with an account that has access.
+        </small>
+        {% else %}
+        <small style="color: grey;">Please login to access this content</small>
+        {% endif %}
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            <span>Email</span>
+            <div class="mdl-textfield mdl-js-textfield" style="width: 100%;">
+                <input class="mdl-textfield__input change-form-background" type="email" id="username" name="username">
+                <label class="mdl-textfield__label" for="username">Email...</label>
+                <span class="mdl-textfield__error">Enter valid email</span>
+            </div>
+
+            <span>Password</span>
+            <div class="mdl-textfield mdl-js-textfield" style="width: 100%;">
+                <input class="mdl-textfield__input change-form-background" type="password" id="password" name="password">
+                <label class="mdl-textfield__label" for="password">Password...</label>
+            </div>
+
+
+            <div style="margin-top: 32px;">
+                <button style="width: 200px;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit"><i class="material-icons" style="margin-right: 8px;">person_outline</i>Login</button>
+                <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="hidden" name="next" value="{{ next }}" />
+            </div>
+        </form>
+        {# Assumes you setup the password_reset view in your URLconf #}
+
+        <div style="margin-top: 16px;">
+            <p><a class="mdl-color-text--blue" href="{% url 'signup' %}"><i class="material-icons" style="margin-right: 8px;">person_add</i>No account Yet? Sign Up</a></p>
+            <p><a class="mdl-color-text--blue" href="{% url 'password_reset' %}"><i class="material-icons" style="margin-right: 8px;">help_outline</i>Lost password?</a></p>
+            <p><a style="width: 180px;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" href="{% url 'index' %}"><i class="material-icons" style="margin-right: 8px;">home</i>Home</a></p>
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %}

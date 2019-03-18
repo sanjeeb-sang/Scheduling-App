@@ -1,0 +1,78 @@
+nav {
+    top: 0;
+}
+
+.card-media {
+    height: 400px;
+    width: 240px;
+}
+
+#view-source {
+    margin-right: 40px;
+    margin-bottom: 40px;
+}
+
+
+.button {
+    position: fixed;
+    display: block;
+    right: 0;
+    bottom: 0;
+    z-index: 900;
+}
+
+a {
+    text-decoration: none;
+}
+
+.drawer-icons {
+    margin-right: 16px;
+}
+
+.drawer-text {
+    font-size: 14px;
+    margin-left: 8px;
+}
+
+
+.django-message {
+    color: red;
+}
+
+#message-button {
+    position: fixed;
+    display: block;
+    right: 0;
+    top: 0;
+    margin-right: 3%;
+    margin-top: 5%;
+    z-index: 900;
+}
+
+.drawer-header-text {
+    color: aquamarine;
+}
+
+.change-background:hover {
+    background: #F5F5F5;
+}
+
+.change-background, .change-form-background {
+    background: #FAFAFA;
+}
+
+    
+.change-form-background:hover {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background: white;
+}
+
+.label {
+    color: #BDBDBD;
+}
+
+.center {
+    margin-right: auto;
+    margin-left: auto;
+}

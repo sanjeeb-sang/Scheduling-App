@@ -1,0 +1,62 @@
+{% extends 'base/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Contact{% endblock %}
+
+
+{% block main_content %}
+<div class="mdl-grid" style="min-height: 85%;">
+
+    <!--Email Card-->
+    <div class="mdl-cell mdl-cell--10-col center">
+
+        <div class="mdl-cell mdl-cell--8-col center mdl-color--grey-50" style="padding: 24px; margin-bottom: 16px;">
+            <h3>Email</h3>
+            <ul>
+
+                <li class="change-background" style="padding: 16px;">
+                    <h6>
+                        <a href="mailto:sangras@warhawks.ulm.edu">
+                            <span class="mdl-chip mdl-chip--contact">
+                            <span class="mdl-chip__contact mdl-color--purple mdl-color-text--white"><i class="material-icons">email</i></span>
+                            <span class="mdl-chip__text">Contact via email</span>
+                        </span>
+                        </a>
+                    </h6>
+                </li>
+
+                <li class="change-background" style="padding: 16px;">
+                    <h6>
+                        <a href="mailto:sanjeeb.developer@gmail.com">
+                            <span class="mdl-chip mdl-chip--contact">
+                            <span class="mdl-chip__contact mdl-color--purple mdl-color-text--white"><i class="material-icons">email</i></span>
+                            <span class="mdl-chip__text">Contact via alternate email</span>
+                        </span>
+                        </a>
+                    </h6>
+                </li>
+
+                <li class="change-background" style="padding: 16px;">
+                    <h6>
+                        <a href="{% url 'index' %}">
+                            <span class="mdl-chip mdl-chip--contact">
+                            <span class="mdl-chip__contact mdl-color--purple mdl-color-text--white"><i class="material-icons">send</i></span>
+                            <span class="mdl-chip__text">Go to Home Page</span>
+                        </span>
+                        </a>
+                    </h6>
+                </li>
+
+                
+            </ul>
+        </div>
+
+
+        
+    </div>
+
+</div>
+
+{% endblock %}
+

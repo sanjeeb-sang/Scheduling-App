@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Logged Out{% endblock %}
+
+{% block main_content %}
+
+<div class="mdl-grid" style="min-height: 80%; padding-top: 32px;">
+
+    <div class="change-background mdl-cell mdl-cell--8-col mdl-shadow--4dp center" style="padding: 16px;">
+
+        <h6>You're Logged out!</h6>
+
+        <a style="margin-top: 32px;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="{% url 'login'%}"><i class="material-icons" style="margin-right: 8px;">account_circle</i>Attempt login</a>
+
+        <p><a style="margin-top: 16px;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="{% url 'index' %}"><i class="material-icons" style="margin-right: 8px">home</i>Go To Home</a></p>
+    </div>
+</div>
+
+
+{% endblock %}
