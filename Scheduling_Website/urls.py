@@ -31,9 +31,7 @@ urlpatterns = [
     url(r'^about$', views.about, name = 'about'), 
       
     url(r'^help/$', views.help, name = 'help'),
-  
-    url(r'^login/$', auth_views.login, name = 'login'),
-    
+      
     url(r'^logout/$', auth_views.logout, name = 'logout'),
 
     url(r'^signup/$', views.signup, name = 'signup'),
