@@ -40,6 +40,8 @@ urlpatterns = [
 
     url(r'^profile/$', views.profile, name='profile'),
 
+    url(r'^schedule/$', views.schedule, name = 'schedule'),
+
     url(r'^suggestions/$', views.suggestions, name='suggestions'),
 
     url(r'all_suggestions/$', views.all_suggestions, name='all_suggestions'),
@@ -57,4 +59,8 @@ urlpatterns = [
     url(r'all_jobs/$', views.all_jobs, name='all_jobs'),
 
     url(r'jobs/delete/(?P<id>\d+)$', views.delete_job, name='delete_job'),
+
+     url(r'^schedule/$', views.schedule, name='schedule'),
+
+    url(r'all_schedules/$', views.all_schedules, name='all_schedules'),
 ]

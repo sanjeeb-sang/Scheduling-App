@@ -152,3 +152,38 @@ def delete_job(request, id):
     all = Job.objects.all();
 
     return render(request, 'job/all_jobs.html', {"title"  :"Jobs", 'message' : 'One Job deleted', "jobs" : all})
+
+
+def schedule(request):
+
+    if request.method == 'GET':
+        # If the method is get, then just display the suggestion page
+        return render(request, 'schedule/schedule.html', {'user' : request.user, 'title' : 'Schedule'})
+    else:
+        # If the method is post, then store the value
+        form = InternshipForm(request.POST);
+        if form.is_valid():
+            internship = Internship()
+            internship.save_internship(request.POST)
+            internship.save()
+
+            return redirect('/all_schedules/')
+
+    
+def all_schedules(request):
+
+    #internships = Internship.objects.all()
+
+    return render(request, 'schedule/all_schedule.html', {"title" : "All Scheduled Appointments"})
+
+"""
+
+def delete_internship(request, id):
+
+    Internship.objects.get(id=id).delete()
+
+    all = Internship.objects.all();
+
+    return render(request, 'internship/all_internships.html', {"title" : "Internships", 'message' : 'One Intership deleted', 'internships' : all})
+
+    """
