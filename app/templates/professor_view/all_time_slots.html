@@ -1,0 +1,70 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block main_content %}
+
+<script>
+    var slots = [];
+    function Slot(d, s, e) {
+        this.date = d;
+        this.startTime = s;
+        this.endTime = e;
+    }     
+</script>  
+
+<div class="mdl-grid" style="min-height: 85%;">
+
+    <style>
+        h6 {
+            padding: 16px;
+            margin-bottom: 0px;
+            margin-top: 0px;
+        }
+    </style>
+
+    <div class="mdl-cell mdl-cell--8-col center">
+
+        <div class="mdl-grid mdl-color--indigo-400 mdl-color-text--white mdl-shadow--4dp center" style="margin-bottom: 16px; padding: 16px; background-color: #EEEEEE;">
+
+            <div class="mdl-cell mdl-cell--8-col">
+                <h3>All Time Slots</h3>
+            </div>
+
+            <div class="mdl-cell mdl-cell--4-col" style="padding-top: 16px;">
+
+                <a href="{% url 'timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Add new</button></a>
+
+                <a href="{% url 'index' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Home Page</button></a>
+
+            </div>
+
+        </div>
+
+
+        {% for timeslot in timeslots %}
+
+        <div class="change-background mdl-color--white mdl-shadow--4dp">
+
+            <h6 style="padding: 8px;" class="mdl-color--blue mdl-color-text--white">
+                <div style="display: inline-block; width: 95%;"><i class="material-icons" style="color: white; font-size: 24px; margin-right: 8px;">account_box</i>TimeSlot {{ forloop.counter }}</div>
+                <div style="display: inline-block; width: 3%;"><a href="timeslots/delete/{{ timeslot.id }}"><i class="material-icons" style="color: white; font-size: 36px;">delete_forever</i></a></div>
+            </h6>
+            <script>
+                slot = new Slot({{ timeslot.date }}, {{ timeslot.start_time }}, {{ timeslot.end_time }});
+                slots.push(slot);
+            </script>
+            <h6><i class="material-icons" style="font-size: 24px; margin-right: 8px;">reorder</i>{{ timeslot.start_time }}</h6>
+            <h6><i class="material-icons" style="font-size: 24px; margin-right: 8px;">reorder</i>{{ timeslot.end_time }}</h6>
+
+            <hr />
+        </div>
+        {% endfor %}
+    </div>
+</div>
+             
+<script>
+
+</script>
+
+
+{% endblock %}

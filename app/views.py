@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from app.forms import SuggestionForm, SignUpForm, InternshipForm, JobForm
-from app.models import Suggestion, Internship, Job
+from app.models import Suggestion, Internship, Job, TimeSlot
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+import json
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -176,8 +178,58 @@ def all_schedules(request):
 
     return render(request, 'schedule/all_schedule.html', {"title" : "All Scheduled Appointments"})
 
-"""
+def calendar(request):
 
+    #internships = Internship.objects.all()
+
+    return render(request, 'calendar/calendar.html', {"title" : "Calendar"})
+
+
+def timeslots(request):
+
+    if request.method == 'GET':
+        # If the method is get, then just display the suggestion page
+        return render(request, 'professor_view/add_time_slot.html', {'title' : 'Add time slot'})
+    else:
+        # slots = json.loads(request.POST.get("slots", ""))
+        startTimes = request.POST.getlist("startTimes[]")
+        endTimes = request.POST.getlist("endTimes[]")
+        professor_name = request.POST.get("professor_name")
+        professor_email = request.POST.get("professor_email")
+        date = request.POST.get("date")
+        
+        for i in range(len(startTimes)):
+            start = startTimes[i]
+            end = endTimes[i]
+            timeslot = TimeSlot()
+            timeslot.save_data(professor_name, professor_email, start, end, date)
+            timeslot.save()
+        
+        return JsonResponse({'result' : 'Ok'})
+
+    
+def all_timeslots(request):
+
+    slots = TimeSlot.objects.all()
+
+    return render(request, 'professor_view/all_time_slots.html', {'timeslots' : slots, "title" : "All TimeSlots"})
+
+
+def delete_timeslot(request, id):
+
+    TimeSlot.objects.get(id=id).delete()
+
+    slots = TimeSlot.objects.all();
+
+    return render(request, 'professor_view/all_time_slots.html', {"title"  :"TimeSlots", 'message' : 'One TimeSlot deleted', "timeslots" : slots})
+
+def get_all_timeslots(request):
+
+    slots = TimeSlot.objects.all()
+
+    return render(request, 'professor_view/all_time_slots.html', {'timeslots' : slots, "title" : "All TimeSlots"})
+
+"""
 def delete_internship(request, id):
 
     Internship.objects.get(id=id).delete()

@@ -1,0 +1,252 @@
+{% extends 'base/base.html' %}
+
+{% block main_content %}
+
+<div class="mdl-grid" style="min-height: 80%;">
+
+    <div class="center mdl-cell mdl-cell--6-col mdl-color--white mdl-shadow--4dp" style="padding: 16px;">
+
+        <h3><i class="material-icons" style="margin-right: 8px; font-size: 24px;">input</i>Add Time Slots</h3>
+
+        <form method="POST" action="{% url 'timeslots' %}">
+
+            <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" id="date" type="date" name="date" />
+                <label class="mdl-textfield__label" for="date">Date of Appointments</label>
+            </div>
+
+            <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="time" id="start_time" onchange="numSlotsChanged()" name="start_time" value="13:00" />
+                <label class="mdl-textfield__label" for="start_time">Start Time</label>
+            </div>
+
+            <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="time" id="end_time" onchange="numSlotsChanged()" name="end_time" value="15:00" />
+                <label class="mdl-textfield__label" for="end_time">End Time</label>
+            </div>
+
+            <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="number" id="number_of_time_slots" onfocus="onFocusOnNumSlots()" value="1" onchange="numSlotsChanged()" min="1" max="20" />
+                <label class="mdl-textfield__label" for="number_of_time_slots">Number of Slots</label>
+            </div>
+
+            <div>
+                <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="numSlotsChanged()">Create Slots</button>
+            </div>
+
+            <div style="margin-top: 16px; margin-bottom: 16px;">
+                <h5>View all time slots</h5>
+                <table style="display: none;" id="timeslots_container" class="full mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric full">Time slot number</th>
+                            <th class="mdl-data-table__cell--non-numeric full" style="width: 100%;">Start time</th>
+                            <th class="mdl-data-table__cell--non-numeric full" style="width: 100%;">End Time</th>
+                            <th class="mdl-data-table__cell--non-numeric full" style="width: 100%;">Total Time</th>
+                        </tr>
+                    </thead> 
+                    <tbody style="width: 100%;" id="all_timeslots"><tbody>
+                </table>
+
+                <div style="margin-top: 16px; margin-bottom: 16px;">
+                    <button style="display: none;" type="button" id="hide_slots_button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="hideSlots()">Hide Slots</button>
+                </div>
+            </div>
+
+            <div id="p" style="display: none;">
+                <h6 id="p-text">Creating new time slots. PLease wait!</h6>
+                <div style="margin-top: 16px; margin-bottom: 16px;" id="p-load" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+            </div>            
+
+            <div>
+                <input id="submit-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="button" value="Submit" />
+            </div>
+
+            <div style="margin-top: 16px;">
+                <a href="{% url 'all_timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="button" value="View all time slots">View all time slots</button></a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    var csrfToken = '{{csrf_token}}';
+</script>
+
+<script>
+    var slotsContainer = document.getElementById('all_timeslots');
+    var timeslotsContainer = document.getElementById('timeslots_container');
+    var numOfSlots = document.getElementById('number_of_time_slots');
+    var startTime = document.getElementById("start_time");
+    var endTime = document.getElementById("end_time");
+    var hideSlotsButton = document.getElementById("hide_slots_button");
+    var dateContainer = document.getElementById("date");
+    function numSlotsChanged(node) {
+
+        slotsContainer.innerHTML = "";
+
+        var slots = getTimeSlots();
+
+        for (var i = 0; i < slots.length; i++) {
+            var slot = slots[i];
+            slotsContainer.innerHTML += "<tr><td class=\"mdl-data-table__cell--non-numeric\">TimeSlot -> " + (i + 1) + "</td><td>" + slot.start + "</td><td>" + slot.end + "</td><td>" + slot.slotTime + " minutes</td></tr>";
+        }
+        timeslotsContainer.style.display = "block";
+        hideSlotsButton.style.display = "block";
+    }
+
+    function hideSlots() {
+        slotsContainer.innerHTML = "";
+        timeslotsContainer.style.display = "none";
+        hideSlotsButton.style.display = "none";
+    }
+
+    function onFocusOnNumSlots() {
+        var start = startTime.value;
+        var end = endTime.value;
+        if (start.length == 0) {
+            startTime.focus();
+        }
+        if (end.length == 0) {
+            endTime.focus();
+        }        
+    }
+
+    function addToTime(time, hourToAdd, minToAdd) {
+        var h = parseInt(getHour(time));
+        var m = parseInt(getMinutes(time));
+        h += hourToAdd;
+        m += minToAdd;
+        if (m == 60 || m >= 60) {
+            h += 1;
+            m -= 60;
+        }
+
+        if (m == 60) {
+            h += 1;
+            m -= 60;
+        }
+
+        if (h < 10) {
+            h = "0" + h;
+        }
+        if (m < 10) {
+            m = "0" + m;
+        }
+        return h + ":" + m;
+    }
+
+    function getHour(time) {
+        return time.split(":")[0];
+    }
+
+    function getTimeSlots() {
+        var result = [];
+        var slots = numOfSlots.value;
+        var start = startTime.value;
+        var end = endTime.value;
+        var totalTime = getTimeDifference(start, end);
+        var slotTime = totalTime / slots;
+
+        var current = start;
+
+        for (var i = 0; i < slots; i++) {
+            result.push(new Slot(current, addToTime(current, 0, slotTime), slotTime));
+            current = addToTime(current, 0, slotTime);
+        }
+        console.log(result);
+        return result;
+    }
+
+    function Slot(start, end, slotTime) {
+        this.start = start;
+        this.end = end;
+        this.slotTime = slotTime;
+    }
+
+    function getTimeDifference(low, higher) {
+        var higherHour = parseInt(getHour(higher));
+        var lowHour = parseInt(getHour(low));
+        var higherMinute = parseInt(getMinutes(higher));
+        var lowMinute = parseInt(getMinutes(low));
+        var diff = 0;
+
+        if ((higherHour - lowHour) >= 1) {
+            diff += (higherHour - lowHour) * 60;
+        }
+
+        diff += higherMinute - lowMinute;
+
+        return diff;
+    }
+
+    function getMinutes(time) {
+        return time.split(":")[1];
+    }
+
+    function setUpSubmit() {
+              
+        $('#submit-button').click(function () {
+
+            document.getElementById("p").style.display = "block";
+            document.getElementById("p-load").style.display = "block";
+            document.getElementById("p-text").style.display = "block";
+            document.getElementById("submit-button").style.display = "none";
+            // get the value of CSRF token
+            var CSRFtoken = $('input[name=csrfmiddlewaretoken]').val();
+
+            var slots = getTimeSlots();
+
+            var startTimes = [];
+            var endTimes = [];
+            var timeSlot = 0;
+            var first = true;
+
+            var date = dateContainer.value;
+            
+            for (var i = 0; i < slots.length; i++) {
+                startTimes.push(slots[i].start);
+                endTimes.push(slots[i].end);
+                if (first) {
+                    first = false;
+                    timeSlot= slots[i].timeSlot;
+                }
+            }
+            $.post('/timeslots/', {
+                "professor_name": "Dr. Lon Smith",
+                "professor_email": "smith@ulm.edu",
+                "date" : date,
+                "startTimes[]": startTimes, 
+                "endTimes[]": endTimes, 
+                "csrfmiddlewaretoken": csrfToken
+            }, function (data, status) {
+                document.getElementById("p-text").innerHTML = "Time Slots have been added.";
+                setTimeout(function () {
+                    document.getElementById("p-text").style.display = "none";
+                    document.getElementById("p").style.display = "none";
+                    document.getElementById("p-load").style.display = "none";
+                    document.getElementById("submit-button").style.display = "block";
+                }, 500);
+            }, 'json');
+        });
+        
+    }
+
+    document.onload = initialize();
+
+    function initialize() {
+        document.getElementById('date').valueAsDate = new Date();
+        setUpSubmit();
+    }
+</script>
+<style>
+    .full {
+        width: 100%;
+    }
+</style>
+
+{% endblock %}
+

@@ -63,4 +63,13 @@ urlpatterns = [
      url(r'^schedule/$', views.schedule, name='schedule'),
 
     url(r'all_schedules/$', views.all_schedules, name='all_schedules'),
+    
+    url(r'^calendar/$', views.calendar, name='calendar'),
+        
+    url(r'^timeslots/$', views.timeslots, name='timeslots'),
+
+    url(r'^all_timeslots/$', views.all_timeslots, name='all_timeslots'),
+    
+    url(r'timeslots/delete/(?P<id>\d+)$', views.delete_timeslot, name='delete_timeslot'),
+
 ]
