@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
-from app.forms import SuggestionForm, SignUpForm, InternshipForm, JobForm
-from app.models import Suggestion, Internship, Job, TimeSlot
+from app.forms import SuggestionForm, SignUpForm
+from app.models import Suggestion, TimeSlot, Date, Appointment
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -11,17 +11,19 @@ from django.http import JsonResponse
 
 def index(request):
 
-    return render(request, 'index.html', {'title' : 'Home', 'message' : 'Hello, and welcome to my site'})
+    user = request.user
+
+    if user.is_authenticated:
+        return render(request, 'index.html', {'title' : 'Home', 'message' : 'Hello, and welcome to my site'})
+    else:
+        return redirect("/accounts/login/")
+
+    
 
 
 def contact(request):
 
     return render(request, 'contact.html', {'title' : 'Contact', 'message' : 'This page contains my contact info'})
-
-
-def courses(request):
-
-    return render(request, 'courses.html', {'title' : 'Courses', 'message' : 'View some of my courses'})
 
 
 def suggestions(request):
@@ -90,101 +92,6 @@ def profile(request):
     return render(request, 'profile.html', {'user' : request.user, "title" : "Profile"})
 
 
-
-
-def internships(request):
-
-    if request.method == 'GET':
-        # If the method is get, then just display the suggestion page
-        return render(request, 'internship/internships.html', {'title' : 'Internships', 'form' : InternshipForm()})
-    else:
-        # If the method is post, then store the value
-        form = InternshipForm(request.POST);
-        if form.is_valid():
-            internship = Internship()
-            internship.save_internship(request.POST)
-            internship.save()
-
-            return redirect('/all_internships/')
-   
-
-def all_internships(request):
-
-    internships = Internship.objects.all()
-
-    return render(request, 'internship/all_internships.html', {'internships' : internships, "title" : "All Internships"})
-
-
-def delete_internship(request, id):
-
-    Internship.objects.get(id=id).delete()
-
-    all = Internship.objects.all();
-
-    return render(request, 'internship/all_internships.html', {"title" : "Internships", 'message' : 'One Intership deleted', 'internships' : all})
-
-
-def jobs(request):
-
-    if request.method == 'GET':
-        # If the method is get, then just display the suggestion page
-        return render(request, 'job/jobs.html', {'title' : 'Jobs', 'form' : JobForm()})
-    else:
-        # If the method is post, then store the value
-        form = JobForm(request.POST);
-        if form.is_valid():
-            job = Job()
-            job.save_job(request.POST)
-            job.save()
-
-            return redirect('/all_jobs/')
-   
-
-def all_jobs(request):
-
-    jobs = Job.objects.all()
-
-    return render(request, 'job/all_jobs.html', {'jobs' : jobs, "title" : "All Jobs"})
-
-
-def delete_job(request, id):
-
-    Job.objects.get(id=id).delete()
-
-    all = Job.objects.all();
-
-    return render(request, 'job/all_jobs.html', {"title"  :"Jobs", 'message' : 'One Job deleted', "jobs" : all})
-
-
-def schedule(request):
-
-    if request.method == 'GET':
-        # If the method is get, then just display the suggestion page
-        return render(request, 'schedule/schedule.html', {'user' : request.user, 'title' : 'Schedule'})
-    else:
-        # If the method is post, then store the value
-        form = InternshipForm(request.POST);
-        if form.is_valid():
-            internship = Internship()
-            internship.save_internship(request.POST)
-            internship.save()
-
-            return redirect('/all_schedules/')
-
-    
-def all_schedules(request):
-
-    #internships = Internship.objects.all()
-
-    return render(request, 'schedule/all_schedule.html', {"title" : "All Scheduled Appointments"})
-
-def calendar(request):
-
-    #internships = Internship.objects.all()
-
-    return render(request, 'calendar/calendar.html', {"title" : "Calendar"})
-
-
 def timeslots(request):
 
     if request.method == 'GET':
@@ -196,8 +103,7 @@ def timeslots(request):
         endTimes = request.POST.getlist("endTimes[]")
         professor_name = request.POST.get("professor_name")
         professor_email = request.POST.get("professor_email")
-        date = request.POST.get("date")
-        
+        date = request.POST.get("date")        
         for i in range(len(startTimes)):
             start = startTimes[i]
             end = endTimes[i]
@@ -210,32 +116,49 @@ def timeslots(request):
     
 def all_timeslots(request):
 
-    slots = TimeSlot.objects.all()
+    slots = TimeSlot.objects.order_by("-date", "-start_time")
 
-    return render(request, 'professor_view/all_time_slots.html', {'timeslots' : slots, "title" : "All TimeSlots"})
+    return render(request, 'common/all_time_slots.html', {'timeslots' : slots, "title" : "All TimeSlots"})
 
 
 def delete_timeslot(request, id):
 
     TimeSlot.objects.get(id=id).delete()
 
-    slots = TimeSlot.objects.all();
-
-    return render(request, 'professor_view/all_time_slots.html', {"title"  :"TimeSlots", 'message' : 'One TimeSlot deleted', "timeslots" : slots})
+    return redirect('/all_timeslots/')
 
 def get_all_timeslots(request):
 
-    slots = TimeSlot.objects.all()
+    slots = TimeSlot.objects.order_by('start_time')
 
-    return render(request, 'professor_view/all_time_slots.html', {'timeslots' : slots, "title" : "All TimeSlots"})
+    return render(request, 'common/all_time_slots.html', {'timeslots' : slots, "title" : "All TimeSlots"})
+   
 
-"""
-def delete_internship(request, id):
+def appointments(request):
 
-    Internship.objects.get(id=id).delete()
+    if request.method == 'GET':
+        return redirect("/all_appointments/")
 
-    all = Internship.objects.all();
+    else:
+        # slots = json.loads(request.POST.get("slots", ""))
+        appointment = Appointment()
+        appointment.save_data(request.POST, request.user)
+        appointment.save()
+        TimeSlot.objects.get(id=request.POST['timeslot_id']).delete()
+        return JsonResponse({'result' : 'Ok'})
 
-    return render(request, 'internship/all_internships.html', {"title" : "Internships", 'message' : 'One Intership deleted', 'internships' : all})
+    
+def all_appointments(request):
+    a = Appointment.objects.filter(user_email=request.user.email)
+    return render(request, 'common/all_appointments.html', {'appointments' : a, "title" : "All Appointments"})
 
-    """
+
+def delete_appointment(request, id):
+
+    app = Appointment.objects.get(id=id)
+    app.delete()
+    slot = TimeSlot()
+    slot.save_data(app.professor_name, app.professor_email, app.start_time, app.end_time, app.date)
+    slot.save()
+
+    return redirect('/all_appointments/')

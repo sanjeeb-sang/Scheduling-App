@@ -1,9 +1,7 @@
-{% extends 'base/base.html' %}
+{% extends 'base/layout.html' %}
 {% load staticfiles %}
 
-{% block title %}Log In{% endblock %}
-
-{% block main_content %}
+{% block content %}
 
 <div class="mdl-grid" style="min-height: 80%;">
 
@@ -25,11 +23,11 @@
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
 
-            <span>Email</span>
+            <span>Username</span>
             <div class="mdl-textfield mdl-js-textfield" style="width: 100%;">
-                <input class="mdl-textfield__input change-form-background" type="email" id="username" name="username">
-                <label class="mdl-textfield__label" for="username">Email...</label>
-                <span class="mdl-textfield__error">Enter valid email</span>
+                <input class="mdl-textfield__input change-form-background" type="text" id="username" name="username">
+                <label class="mdl-textfield__label" for="username">Username...</label>
+                <span class="mdl-textfield__error">Enter valid username</span>
             </div>
 
             <span>Password</span>
@@ -49,7 +47,10 @@
         <div style="margin-top: 16px;">
             <p><a class="mdl-color-text--blue" href="{% url 'signup' %}"><i class="material-icons" style="margin-right: 8px;">person_add</i>No account Yet? Sign Up</a></p>
             <p><a class="mdl-color-text--blue" href="{% url 'password_reset' %}"><i class="material-icons" style="margin-right: 8px;">help_outline</i>Lost password?</a></p>
+            {% if user.is_authenticated %}
             <p><a style="width: 180px;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" href="{% url 'index' %}"><i class="material-icons" style="margin-right: 8px;">home</i>Home</a></p>
+            {% endif %}
+
         </div>
     </div>
 

@@ -1,14 +1,11 @@
-{% extends 'base/base.html' %}
+{% extends 'base/layout.html' %}
 {% load staticfiles %}
 
-{% block title %}Sign Up{% endblock %}
-
-
-{% block main_content %}
+{% block content %}
 
 <div class="mdl-grid" style="min-height: 80%; padding-top: 32px;">
 
-    <div class="mdl-color--white mdl-cell mdl-cell--8-col mdl-shadow--4dp center" style="padding: 16px;">
+    <div class="mdl-color--white mdl-cell mdl-cell--6-col mdl-shadow--4dp center" style="padding: 16px;">
 
         <h2><i class="material-icons" style="margin-right: 8px; font-size: 24px; color: deepskyblue;">person_add</i>Sign up</h2>
         <form method="post" action="{% url 'signup' %}">
@@ -21,7 +18,9 @@
 
             <p><a href="{% url 'login' %}">Already Have An Account? Login.</a></p>
 
+            {% if user.is_authenticated %}
             <p><a href="{% url 'index' %}">Go to Home Page</a></p>
+            {% endif %}
         </div>
 
 

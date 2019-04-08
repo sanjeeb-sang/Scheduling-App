@@ -36,35 +36,13 @@ urlpatterns = [
 
     url('accounts/', include('django.contrib.auth.urls')),
 
-    url(r'^courses/$', views.courses, name = 'courses'),
-
     url(r'^profile/$', views.profile, name='profile'),
-
-    url(r'^schedule/$', views.schedule, name = 'schedule'),
 
     url(r'^suggestions/$', views.suggestions, name='suggestions'),
 
     url(r'all_suggestions/$', views.all_suggestions, name='all_suggestions'),
 
     url(r'suggestions/delete/(?P<id>\d+)$', views.delete_suggestion, name='delete_suggestion'),
-
-    url(r'^internships/$', views.internships, name='internships'),
-
-    url(r'all_internships/$', views.all_internships, name='all_internships'),
-
-    url(r'internships/delete/(?P<id>\d+)$', views.delete_internship, name='delete_internships'),
-
-    url(r'^jobs/$', views.jobs, name='jobs'),
-
-    url(r'all_jobs/$', views.all_jobs, name='all_jobs'),
-
-    url(r'jobs/delete/(?P<id>\d+)$', views.delete_job, name='delete_job'),
-
-     url(r'^schedule/$', views.schedule, name='schedule'),
-
-    url(r'all_schedules/$', views.all_schedules, name='all_schedules'),
-    
-    url(r'^calendar/$', views.calendar, name='calendar'),
         
     url(r'^timeslots/$', views.timeslots, name='timeslots'),
 
@@ -72,4 +50,9 @@ urlpatterns = [
     
     url(r'timeslots/delete/(?P<id>\d+)$', views.delete_timeslot, name='delete_timeslot'),
 
+    url(r'^appointments/$', views.appointments, name='appointments'),
+
+    url(r'all_appointments/$', views.all_appointments, name='all_appointments'),
+
+    url(r'appointments/delete/(?P<id>\d+)$', views.delete_appointment, name='delete_appointment'),
 ]

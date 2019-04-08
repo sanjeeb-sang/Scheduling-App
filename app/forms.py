@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from app.models import Suggestion, Internship, Job
+from app.models import Suggestion
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -36,36 +36,3 @@ class SignUpForm(UserCreationForm):
                 'password1' : forms.PasswordInput(attrs={'class' : TEXTFIELD_HTML_CLASS}),
                 'password2' : forms.PasswordInput(attrs={'class' : TEXTFIELD_HTML_CLASS}),
             }
-
-
-class InternshipForm(forms.ModelForm):
-
-    class Meta:
-
-        model = Internship;
-
-        fields = ['internship_name', 'company_name', 'url', 'date_posted', ]
-
-        widgets = {
-                'internship_name' : forms.TextInput(attrs={'class' : TEXTFIELD_HTML_CLASS}),
-                'company_name' : forms.TextInput(attrs={'class' : TEXTFIELD_HTML_CLASS}),
-                'url' : forms.TextInput(attrs={'class' : TEXTFIELD_HTML_CLASS}),
-                'date_posted' : forms.DateInput(attrs={'type' : 'date'}),
-            }
-
-        
-class JobForm(forms.ModelForm):
-
-    class Meta:
-
-        model = Job;
-
-        fields = ['job_name', 'company_name', 'url', 'date_posted', ]
-
-        widgets = {
-                'job_name' : forms.TextInput(attrs={'class' : TEXTFIELD_HTML_CLASS}),
-                'company_name' : forms.TextInput(attrs={'class' : TEXTFIELD_HTML_CLASS}),
-                'url' : forms.TextInput(attrs={'class' : TEXTFIELD_HTML_CLASS}),
-                'date_posted' : forms.DateInput(attrs={'type' : 'date'}),
-            }
-

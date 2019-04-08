@@ -5462,3 +5462,8 @@ C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Micro
 2019-03-17T21:20:20: Saving group "C:\Users\Sanjeeb\Desktop\ip_extra\project_version_1\Scheduling_Website\Scheduling_Website\env\Lib\site-packages\_markerlib"
 2019-03-17T21:20:20: End of group "C:\Users\Sanjeeb\Desktop\ip_extra\project_version_1\Scheduling_Website\Scheduling_Website\env\Lib\site-packages\_markerlib"
 2019-03-17T21:20:22: Deleting 0 files
+
+2019-04-08T16:14:56: Start analysis
+2019-04-08T16:14:56: [WARNING] Library was set explicitly - skipping path detection
+2019-04-08T16:14:56: IncludeModulesFromModulePath = win32com
+2019-04-08T16:15:00: Deleting 0 files

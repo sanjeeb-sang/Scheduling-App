@@ -54,40 +54,30 @@
     </Content>
     <Content Include="app\templates\about.html" />
     <Content Include="app\templates\all_suggestions.html" />
-    <Content Include="app\templates\base\base.html" />
-    <Content Include="app\templates\base\privacy_policy.html" />
-    <Content Include="app\templates\calendar\calendar.html">
+    <Content Include="app\templates\base\backbone.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\templates\base\base.html" />
+    <Content Include="app\templates\base\layout.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\templates\base\privacy_policy.html" />
     <Content Include="app\templates\contact.html" />
-    <Content Include="app\templates\courses.html" />
     <Content Include="app\templates\help.html" />
     <Content Include="app\templates\index.html" />
-    <Content Include="app\templates\internship\all_internships.html" />
-    <Content Include="app\templates\internship\internships.html" />
-    <Content Include="app\templates\job\all_jobs.html" />
-    <Content Include="app\templates\job\jobs.html" />
     <Content Include="app\templates\legal_information.html" />
     <Content Include="app\templates\privacy_policy.html" />
     <Content Include="app\templates\professor_view\add_time_slot.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="app\templates\professor_view\all_appointments.html">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="app\templates\professor_view\all_time_slots.html">
+    <Content Include="app\templates\common\all_time_slots.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\templates\profile.html" />
-    <Content Include="app\templates\schedule\all_schedule.html">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="app\templates\schedule\schedule.html">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="app\templates\student_view\add_appointment.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\templates\common\all_appointments.html" />
     <Content Include="app\templates\suggestions.html" />
     <Content Include="app\templates\users\users_list.html" />
     <Content Include="app\__pycache__\admin.cpython-36.pyc" />
@@ -115,12 +105,9 @@
     <Folder Include="app\static\script\" />
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\base\" />
-    <Folder Include="app\templates\internship\" />
-    <Folder Include="app\templates\job\" />
-    <Folder Include="app\templates\calendar\" />
+    <Folder Include="app\templates\common\" />
     <Folder Include="app\templates\student_view\" />
     <Folder Include="app\templates\professor_view\" />
-    <Folder Include="app\templates\schedule\" />
     <Folder Include="app\templates\users\" />
     <Folder Include="app\__pycache__\" />
     <Folder Include="Scheduling_Website\" />

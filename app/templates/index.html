@@ -1,11 +1,7 @@
 {% extends 'base/base.html' %}
 {% load staticfiles %}
-
 {% block title %}Home{% endblock %}
-
-
 {% block main_content %}
-
 <div class="mdl-grid" style="min-height: 100%;">
 
     <div class="mdl-cell mdl-card mdl-color--purple-50 mdl-shadow--4dp mdl-cell--6-col center">
@@ -30,19 +26,19 @@
 
             <div class="change-background" style="padding: 8px; margin-bottom: 8px;">
                 <div>
-                    <h4>Schedule a new Advisement</h4>
+                    <h4>View all time slots</h4>
                 </div>
                 <div style="margin: 16px;">
-                    <a href="{% url 'all_schedules' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Schedule</button></a>
+                    <a href="{% url 'all_timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">View</button></a>
                 </div>
             </div>
 
             <div class="change-background" style="padding: 8px; margin-bottom: 8px;">
                 <div>
-                    <h4>View all time slots</h4>
+                    <h4>View all appointments</h4>
                 </div>
                 <div style="margin: 16px;">
-                    <a href="{% url 'all_timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">View</button></a>
+                    <a href="{% url 'all_appointments' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">View</button></a>
                 </div>
             </div>
 

@@ -1,0 +1,108 @@
+{% extends "base/layout.html" %}
+{% load staticfiles %}
+
+{% block layouts %}
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" style="height: 100%; width: 100%;">
+
+    <header class="mdl-layout__header">
+
+        <div class="mdl-layout__header-row">
+
+            <span class="mdl-layout-title">{{ title }}</span>
+
+            <div class="mdl-layout-spacer"></div>
+
+            {% if user.is_authenticated %}
+            <a class="mdl-navigation__link" href="{% url 'profile' %}">Hello, {{ user.username }}</a>
+            {% endif %}
+
+            <!-- Navigation -->
+            <nav class="mdl-navigation mdl-layout--large-screen-only">
+                <a class="mdl-navigation__link" href="{% url 'index' %}">Home</a>
+                {% if user.is_authenticated %}
+                <a class="mdl-navigation__link" href="{% url 'logout' %}">Log Out</a>
+                {% else %}
+                <a class="mdl-navigation__link" href="{% url 'login' %}">Log In</a>
+                {% endif %}
+
+            </nav>
+
+            <button class="mdl-layout--small-screen-only mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="height: 48px; width: 48px;" id="hdrbtn">
+                <i class="material-icons" style="width: 24px; height: 24px;">more_vert</i>
+            </button>
+
+
+            <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
+                <a href="{% url 'index' %}"><li class="mdl-menu__item">Home</li></a>
+                {% if user.is_authenticated %}
+                <a class="mdl-navigation__link" href="{% url 'logout' %}">Log Out</a>
+                {% else %}
+                <a class="mdl-navigation__link" href="{% url 'login' %}">Log In</a>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
+
+    <div class="mdl-layout__drawer">
+
+        <span class="mdl-layout-title" style="justify-content: center; height: 100px;">{{ title }}</span>
+
+        <nav class="mdl-navigation" style="height: 85%;">
+
+            <a class="drawer-items mdl-navigation__link" href="{% url 'index' %}">
+                <i class="material-icons" style="margin-right: 16px;">account_balance</i><span>Home</span>
+            </a>
+
+            {% if user.is_authenticated %}
+            <a class="drawer-items mdl-navigation__link" href="{% url 'profile' %}">
+                <i class="material-icons" style="margin-right: 16px;">account_circle</i><span>Account</span>
+            </a>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <a class="drawer-items mdl-navigation__link" href="{% url 'logout' %}">
+                <i class="material-icons" style="margin-right: 16px;">account_box</i><span>Logout</span>
+            </a>
+            {% else %}
+            <a class="drawer-items mdl-navigation__link" href="{% url 'login' %}">
+                <i class="material-icons" style="margin-right: 16px;">account_box</i><span>Login</span>
+            </a>
+            {% endif %}
+
+            <div class="mdl-layout-spacer"></div>
+
+            <a class="drawer-items mdl-navigation__link" href="{% url 'all_suggestions' %}" style="bottom: 0px;">
+                <i class="material-icons" style="margin-right: 16px;">message</i><span>Suggestion</span>
+            </a>
+
+        </nav>
+
+    </div>
+
+    <main class="mdl-layout__content mdl-color--grey-200" style="height: 100%; max-width: 100%;">
+
+        <div id="content-div" style="min-height: 85%;">
+
+            {% if message %}<div id="message" style="width: 100%; height: 40px; padding: 8px; text-align: center;"><div style="width: 90%; display: inline-block;">{{message}}</div><div style="margin-right: 16px; display: inline-block;"><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" onclick="deleteMessage()"><i class="material-icons" style="color: white; margin-right: 8px;">delete_forever</i>Hide</button></div></div>{% endif %}
+
+            {% block main_content %}{% endblock %}
+
+        </div>
+
+        <footer class="mdl-mini-footer">
+            <div class="mdl-mini-footer__left-section">
+                <div class="mdl-logo">Sanjeeb Sangraula</div>
+                <ul class="mdl-mini-footer__link-list">
+                    <li><a href="mailto:sanjeeb.developer@gmail.com">Send Email</a></li>
+                    <li><a href="{% url 'legal_information' %}">Privacy & Terms</a></li>
+                </ul>
+            </div>
+        </footer>
+
+
+
+    </main>
+</div>
+
+{% endblock %}

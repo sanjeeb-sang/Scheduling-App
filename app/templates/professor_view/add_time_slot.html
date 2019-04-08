@@ -6,9 +6,13 @@
 
     <div class="center mdl-cell mdl-cell--6-col mdl-color--white mdl-shadow--4dp" style="padding: 16px;">
 
+        <div id="p" style="display: none;">
+            <h6 id="p-text">Creating new time slots. PLease wait!</h6>
+            <div style="margin-top: 16px; margin-bottom: 16px;" id="p-load" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+        </div>
         <h3><i class="material-icons" style="margin-right: 8px; font-size: 24px;">input</i>Add Time Slots</h3>
 
-        <form method="POST" action="{% url 'timeslots' %}">
+        <form id="form" method="POST" action="{% url 'timeslots' %}">
 
             <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" id="date" type="date" name="date" />
@@ -31,12 +35,12 @@
             </div>
 
             <div>
-                <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="numSlotsChanged()">Create Slots</button>
+                <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="numSlotsChanged()"><i style="margin-right: 8px;" class="material-icons">view_list</i>View Slots</button>
             </div>
 
             <div style="margin-top: 16px; margin-bottom: 16px;">
-                <h5>View all time slots</h5>
                 <table style="display: none;" id="timeslots_container" class="full mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                    <caption>All time slots</caption>
                     <thead>
                         <tr>
                             <th class="mdl-data-table__cell--non-numeric full">Time slot number</th>
@@ -44,26 +48,18 @@
                             <th class="mdl-data-table__cell--non-numeric full" style="width: 100%;">End Time</th>
                             <th class="mdl-data-table__cell--non-numeric full" style="width: 100%;">Total Time</th>
                         </tr>
-                    </thead> 
-                    <tbody style="width: 100%;" id="all_timeslots"><tbody>
+                    </thead>
+                    <tbody style="width: 100%;" id="all_timeslots">
+                    <tbody>
                 </table>
 
                 <div style="margin-top: 16px; margin-bottom: 16px;">
-                    <button style="display: none;" type="button" id="hide_slots_button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="hideSlots()">Hide Slots</button>
+                    <button style="display: none;" type="button" id="hide_slots_button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="hideSlots()"><i style="margin-right: 8px;" class="material-icons">visibility_off</i>Hide Slots</button>
                 </div>
             </div>
 
-            <div id="p" style="display: none;">
-                <h6 id="p-text">Creating new time slots. PLease wait!</h6>
-                <div style="margin-top: 16px; margin-bottom: 16px;" id="p-load" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
-            </div>            
-
             <div>
-                <input id="submit-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="button" value="Submit" />
-            </div>
-
-            <div style="margin-top: 16px;">
-                <a href="{% url 'all_timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="button" value="View all time slots">View all time slots</button></a>
+                <button id="submit-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="button"><i style="margin-right: 8px;" class="material-icons">done</i>Submit</button>
             </div>
 
         </form>
@@ -92,7 +88,7 @@
 
         for (var i = 0; i < slots.length; i++) {
             var slot = slots[i];
-            slotsContainer.innerHTML += "<tr><td class=\"mdl-data-table__cell--non-numeric\">TimeSlot -> " + (i + 1) + "</td><td>" + slot.start + "</td><td>" + slot.end + "</td><td>" + slot.slotTime + " minutes</td></tr>";
+            slotsContainer.innerHTML += "<tr><td class=\"mdl-data-table__cell--non-numeric\">" + (i + 1) + "</td><td>" + slot.start + "</td><td>" + slot.end + "</td><td>" + slot.slotTime + " minutes</td></tr>";
         }
         timeslotsContainer.style.display = "block";
         hideSlotsButton.style.display = "block";
@@ -112,7 +108,7 @@
         }
         if (end.length == 0) {
             endTime.focus();
-        }        
+        }
     }
 
     function addToTime(time, hourToAdd, minToAdd) {
@@ -188,8 +184,8 @@
     }
 
     function setUpSubmit() {
-              
-        $('#submit-button').click(function () {
+
+        var submitFunction = function () {
 
             document.getElementById("p").style.display = "block";
             document.getElementById("p-load").style.display = "block";
@@ -206,21 +202,21 @@
             var first = true;
 
             var date = dateContainer.value;
-            
+
             for (var i = 0; i < slots.length; i++) {
                 startTimes.push(slots[i].start);
                 endTimes.push(slots[i].end);
                 if (first) {
                     first = false;
-                    timeSlot= slots[i].timeSlot;
+                    timeSlot = slots[i].timeSlot;
                 }
             }
             $.post('/timeslots/', {
                 "professor_name": "Dr. Lon Smith",
                 "professor_email": "smith@ulm.edu",
-                "date" : date,
-                "startTimes[]": startTimes, 
-                "endTimes[]": endTimes, 
+                "date": date,
+                "startTimes[]": startTimes,
+                "endTimes[]": endTimes,
                 "csrfmiddlewaretoken": csrfToken
             }, function (data, status) {
                 document.getElementById("p-text").innerHTML = "Time Slots have been added.";
@@ -229,10 +225,16 @@
                     document.getElementById("p").style.display = "none";
                     document.getElementById("p-load").style.display = "none";
                     document.getElementById("submit-button").style.display = "block";
+                    setTimeout(function () {
+                        window.location.href = "/all_timeslots/";
+                    }, 500);
                 }, 500);
             }, 'json');
-        });
-        
+        };
+
+        $('#submit-button').click(submitFunction);
+
+
     }
 
     document.onload = initialize();

@@ -2,6 +2,8 @@ from django.db import models
 
 # Create your models here.
 
+MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
 class Suggestion(models.Model):
 
     user_name = models.CharField(max_length = 40)
@@ -9,6 +11,9 @@ class Suggestion(models.Model):
     user_email = models.EmailField(max_length = 40)
 
     suggestion = models.TextField()
+
+    def __str__(self):
+        return self.user_email
 
     def save_suggestion(self, post_values):
 
@@ -27,15 +32,37 @@ class Appointment(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
 
-    def save_appointment(self, post_values):
+    def clean_date (self, date):
+        list = date.split(" ")
+        month = list[0]
+        day = list[1].replace(",", "")
+        year = list[2]
+        return str(year) + "-" + str(MONTHS.index(month) + 1) + "-" + str(day)
+
+    def clean_time (self, time):
+        list = time.split(" ");
+        t = list[0]
+        timeList = t.split(":")
+        hour = int(timeList[0])
+        mins = "00"
+        if len(timeList) > 1:
+            mins = timeList[1]
+        pmOrAm = list[1]
+        if "p.m" in pmOrAm:
+            hour += 12;
+        return str(hour) + ":" + mins
+    
+    def __str__(self):
+        return self.user_email
+    def save_data(self, post_values, user):
 
         self.professor_name = post_values['professor_name']
         self.professor_email = post_values['professor_email']
-        self.user_name = post_values['user_name']
-        self.user_email = post_values['user_email']
-        self.date = post_values['date']
-        self.start_time = post_values['start_time']
-        self.end_time = post_values['end_time']
+        self.user_name = user.username
+        self.user_email = user.email
+        self.date = self.clean_date(post_values['date'])
+        self.start_time = self.clean_time(post_values['start_time'])
+        self.end_time = self.clean_time(post_values['end_time'])
 
 class TimeSlot(models.Model):
 
@@ -45,6 +72,9 @@ class TimeSlot(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
 
+    def __str__(self):
+        return self.date + " at " + self.start_time
+
     def save_data(self, p_name, p_email, start, end, date):
         self.professor_name = p_name
         self.professor_email = p_email
@@ -52,32 +82,9 @@ class TimeSlot(models.Model):
         self.start_time = start
         self.end_time = end
 
+class Date(models.Model):
 
-class Internship(models.Model):
+    date = models.DateField()
 
-    internship_name = models.CharField(max_length = 200)
-    company_name = models.CharField(max_length = 200)
-    url = models.CharField(max_length = 200)
-    date_posted = models.DateField()
-
-    def save_internship(self, post_values):
-
-        self.internship_name = post_values['internship_name']
-        self.company_name = post_values['company_name']
-        self.url = post_values['url']
-        self.date_posted = post_values['date_posted']
-
-
-class Job(models.Model):
-
-    job_name = models.CharField(max_length = 200)
-    company_name = models.CharField(max_length = 100)
-    url = models.CharField(max_length = 200)
-    date_posted = models.DateField()
-
-    def save_job(self, post_values):
-
-        self.job_name = post_values['job_name']
-        self.company_name = post_values['company_name']
-        self.url = post_values['url']
-        self.date_posted = post_values['date_posted']
+    def save_date(self, d):
+        date = d;
