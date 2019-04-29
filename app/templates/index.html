@@ -6,23 +6,7 @@
 
     <div class="mdl-cell mdl-card mdl-color--purple-50 mdl-shadow--4dp mdl-cell--6-col center">
 
-        <div style="padding: 24px;" class="">
-
-            <div class="change-background" style="margin-bottom: 8px; padding: 8px;">
-
-                <div>
-                    <h4>{% if user.is_authenticated %}Welcome {{ user.username }}{% else %}Not Signed In{% endif %}</h4>
-                </div>
-
-                <div style="margin: 16px">
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'profile' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">View Profile</button></a>
-                    {% else %}
-                    <a href="{% url 'login' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Log In</button></a>
-                    {% endif %}
-                </div>
-
-            </div>          
+        <div style="padding: 24px;" class="">     
 
             <div class="change-background" style="padding: 8px; margin-bottom: 8px;">
                 <div>

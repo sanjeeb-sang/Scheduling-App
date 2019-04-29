@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block main_content %}
+
+
+<script>
+    var csrfToken = "{{csrf_token}}";
+    var PROFESSOR_EMAIL = "{{ professor_email }}";
+    var STATUS = "{{ request.session.status }}";
+</script>
+
+
+<div class="mdl-grid" style="min-height: 85%;">
+
+    <style>
+        h6 {
+            padding: 16px;
+            margin-bottom: 0px;
+            margin-top: 0px;
+        }
+    </style>
+
+    <div class="mdl-cell mdl-cell--8-col center">
+
+        <div class="mdl-grid mdl-color--indigo-400 mdl-color-text--white mdl-shadow--4dp center" style="margin-bottom: 16px; padding: 16px; background-color: #EEEEEE;">
+
+            <div class="mdl-cell mdl-cell--8-col">
+                <h3>Select a Time Slot</h3>
+            </div>
+
+            <div class="mdl-cell mdl-cell--4-col" style="padding-top: 16px;">
+
+                <a href="{% url 'timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">add</i>New</button></a>
+
+                <a href="{% url 'all_appointments' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">view_list</i>Appointments</button></a>
+
+            </div>
+
+        </div>
+
+        <div id="calendar"></div>
+
+        <script src="{% static 'script/calendar.js' %}"></script>
+
+        <div style="margin-top: 32px;" id="root"></div>
+
+        <script src="{% static 'script/all_time_slots.js' %}" ></script>
+
+        {% for timeslot in timeslots %}
+        <script>
+            slot = new Slot("{{ timeslot.date }}", "{{ timeslot.start_time }}", "{{ timeslot.end_time }}", "{{ timeslot.id }}");
+            slots.push(slot);
+            slotsMap.set(slot.id, slot);
+        </script>
+        {% endfor %}
+        <script>
+            handleSlots();
+        </script>
+
+    </div>
+
+</div>
+<link rel="stylesheet" href="{% static 'css/calendar-styles.css' %}" />
+
+{% endblock %}

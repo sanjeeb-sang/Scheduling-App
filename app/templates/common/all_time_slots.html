@@ -29,9 +29,9 @@
 
             <div class="mdl-cell mdl-cell--4-col" style="padding-top: 16px;">
 
-                <a href="{% url 'timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Add New</button></a>
+                <a href="{% url 'timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">add</i>New</button></a>
 
-                <a href="{% url 'index' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Home Page</button></a>
+                <a href="{% url 'all_appointments' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">view_list</i>Appointments</button></a>
 
             </div>
 
@@ -43,6 +43,8 @@
 
         <script>
             var slots = [];
+            var dates = [];
+            var dateToSlotsMap = new Map();
             var slotsMap = new Map();
             function Slot(d, s, e, id) {
                 this.date = d;
@@ -65,7 +67,7 @@
                 }, function (data, status) {
                     p.style.display = "none";
                     setTimeout(function () {
-                        location.reload();
+                        window.location.href = "/all_appointments/";
                     }, 300);
                 }, 'json');
             }
@@ -119,7 +121,6 @@
                 key = keys.next();
             }
         </script>
-
 
     </div>
 

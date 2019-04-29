@@ -1,7 +1,13 @@
 {% extends 'base/base.html' %}
+{% load staticfiles %}
 
 {% block main_content %}
 
+<script>
+    var STATUS = "{{ request.session.status }}";   
+</script>
+
+<link rel="stylesheet" href="{% static 'css/calendar-styles.css' %}" />
 
 <div class="mdl-grid" style="min-height: 85%;">
 
@@ -23,55 +29,41 @@
 
             <div class="mdl-cell mdl-cell--4-col" style="padding-top: 16px;">
 
-                <a href="{% url 'all_timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Add new</button></a>
+                <a href="{% url 'all_timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">add</i>New</button></a>
 
-                <a href="{% url 'index' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Home Page</button></a>
+                <a href="{% url 'all_timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">view_list</i>Timeslots</button></a>
 
             </div>
 
         </div>
 
+        <div style="margin-bottom: 32px;" id="calendar"></div>
+        <script src="{% static 'script/calendar.js' %}"></script>
 
-        {% for appointment in appointments %}
-
-        <div class="change-background mdl-color--white mdl-shadow--4dp">
-
-            <h6 style="padding: 16px;" class="mdl-color--blue mdl-color-text--white">
-                <div style="display: inline-block; width: 95%;"><i class="material-icons" style="color: white; font-size: 24px; margin-right: 8px;">account_box</i>{{ appointment.user_name }}</div>
-                <div style="display: inline-block; width: 3%;"><a href="appointments/delete/{{ appointment.id }}"><i class="material-icons" style="color: white; font-size: 36px;">delete_forever</i></a></div>
-            </h6>
-
-
-            <h6><i class="material-icons" style="font-size: 24px; margin-right: 8px;">calendar_today</i>{{ appointment.date }}</h6>
-            <h6><i class="material-icons" style="font-size: 24px; margin-right: 8px;">calendar_today</i>{{ appointment.start_time }} to {{ appointment.end_time }}</h6>
-            <h6><i class="material-icons" style="font-size: 24px; margin-right: 8px;">email</i>{{ appointment.user_email }}</h6>
-            
-            <span></span>
-
-            <hr />
-            <div style="padding-left: 16px;">
-                <a href="mailto:{{ appointment.user_email }}">
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-color--blue mdl-color-text--white">
-                        <i class="material-icons" style="margin-right: 8px;">email</i>Send Email
-                    </button>
-                </a>
-                <a href="appointments/delete/{{ appointment.id }}">
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-color--blue mdl-color-text--white">
-                        <i class="material-icons" style="margin-right: 8px;">delete</i>Delete
-                    </button>
-                </a>
-            </div>
-
-            <hr />
-
-        </div>
-
-
-        {% endfor %}
+        <div id="appointment-container"></div>
 
     </div>
 
 </div>
+
+<script src="{% static 'script/all_time_slots.js' %}"></script>
+<script src="{% static 'script/all_appointments.js' %}"></script>
+
+{% for a in appointments %}
+    <script>
+        var slot = new Slot("{{ a.date }}", "{{ a.start_time }}", "{{ a.end_time }}", "{{ a.id }}");
+        slots.push(slot);
+        slotsMap.set(slot.id, slot);
+        console.log("Slot ------ ------ ------ " + slot.id + "    " + slot.date + "    " + slot.startTime + "    " + slot.endTime);
+        var email_contact = {% if request.session.status == "professor" %}"{{ a.user_email }}"{% endif %}{% if request.session.status == "student" %}"{{ a.professor_email }}"{% endif %};
+        var title = {% if request.session.status == "professor" %}"{{ a.user_name }}"{% endif %}{% if request.session.status == "student" %}"{{ a.professor_name }}"{% endif %};
+        var appointment = new Appointment(slot, email_contact, title);
+        all_appointments.set(slot.id, appointment);
+    </script>
+{% endfor %}
+<script>
+    handleSlots();
+</script>
 
 
 {% endblock %}

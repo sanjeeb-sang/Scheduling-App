@@ -1,0 +1,53 @@
+#calendar-root {
+    position: relative;
+}
+
+table thead th, table tbody td {
+    padding: 16px;
+}
+
+table thead, table caption {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    background-color: #1E88E5;
+    color: white;
+}
+
+table thead th {
+    color: white;
+}
+
+table tbody td{
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+table tbody td:hover{
+    background-color: #EEEEEE;
+}
+
+table {
+    background-color: #FAFAFA;
+    border-collapse: collapse;
+    cursor: pointer;
+}
+
+#month, #year {
+   padding-right: 8px;
+   padding-left: 8px;
+   padding-top: 4px;
+   padding-bottom: 4px;
+}
+
+#month {
+   font-size: 24px;
+}
+
+#year {
+    font-size: 18px;
+}
+
+#month-box, #year-box {
+    padding: 4px;
+}

@@ -53,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'app.helpers.middlewares.AuthRequiredMiddleware',
+    'app.helpers.middlewares.ProfessorStudentRelationMiddleware',    
 ]
 
 ROOT_URLCONF = 'Scheduling_Website.urls'
@@ -143,12 +145,28 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 
-EMAIL_USE_TLS = True
-SERVER_EMAIL = 'sanjeeb.ulm@gmail.com'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'sanjeeb.ulm@gmail.com'
-EMAIL_HOST_PASSWORD = 'MessiBarca5'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# host
+EMAIL_HOST = "smtp.gmail.com"
+
+# port
+EMAIL_PORT = 587
+
+# username 
+EMAIL_HOST_USER = "keepr.mobile.app@gmail.com"
+
+# password
+EMAIL_HOST_PASSWORD = "messibarca"
+
+# use_tls
+EMAIL_USE_TLS = True
+
+# use_ssl  EMAIL_USE_SSL = True
+
+# timeout  EMAIL_TIMEOUT
+
+# ssl_keyfile  EMAIL_SSL_KEYFILE
+
+# ssl_certfile  EMAIL_SSL_CERTFILE
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

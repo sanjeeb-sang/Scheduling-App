@@ -1,68 +1,76 @@
 {% extends 'base/base.html' %}
+{% load staticfiles %}
 
 {% block main_content %}
 
 <div class="mdl-grid" style="min-height: 80%;">
 
     <div class="center mdl-cell mdl-cell--6-col mdl-color--white mdl-shadow--4dp" style="padding: 16px;">
-
-        <div id="p" style="display: none;">
-            <h6 id="p-text">Creating new time slots. PLease wait!</h6>
-            <div style="margin-top: 16px; margin-bottom: 16px;" id="p-load" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
-        </div>
         <h3><i class="material-icons" style="margin-right: 8px; font-size: 24px;">input</i>Add Time Slots</h3>
 
-        <form id="form" method="POST" action="{% url 'timeslots' %}">
 
-            <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" id="date" type="date" name="date" />
-                <label class="mdl-textfield__label" for="date">Date of Appointments</label>
-            </div>
+        <div style="margin-top: 16px;">
 
-            <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="time" id="start_time" onchange="numSlotsChanged()" name="start_time" value="13:00" />
-                <label class="mdl-textfield__label" for="start_time">Start Time</label>
-            </div>
+            <form id="form" method="POST" action="{% url 'timeslots' %}">
 
-            <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="time" id="end_time" onchange="numSlotsChanged()" name="end_time" value="15:00" />
-                <label class="mdl-textfield__label" for="end_time">End Time</label>
-            </div>
+                <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" id="date" type="date" name="date" />
+                    <label class="mdl-textfield__label" for="date">Date of Appointments</label>
+                </div>
 
-            <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="number" id="number_of_time_slots" onfocus="onFocusOnNumSlots()" value="1" onchange="numSlotsChanged()" min="1" max="20" />
-                <label class="mdl-textfield__label" for="number_of_time_slots">Number of Slots</label>
-            </div>
+                <div id="calendar"></div>
 
-            <div>
-                <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="numSlotsChanged()"><i style="margin-right: 8px;" class="material-icons">view_list</i>View Slots</button>
-            </div>
+                <div style="margin-top: 16px;" class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="time" id="start_time" onchange="numSlotsChanged()" name="start_time" value="13:00" />
+                    <label class="mdl-textfield__label" for="start_time">Start Time</label>
+                </div>
 
-            <div style="margin-top: 16px; margin-bottom: 16px;">
-                <table style="display: none;" id="timeslots_container" class="full mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                    <caption>All time slots</caption>
-                    <thead>
-                        <tr>
-                            <th class="mdl-data-table__cell--non-numeric full">Time slot number</th>
-                            <th class="mdl-data-table__cell--non-numeric full" style="width: 100%;">Start time</th>
-                            <th class="mdl-data-table__cell--non-numeric full" style="width: 100%;">End Time</th>
-                            <th class="mdl-data-table__cell--non-numeric full" style="width: 100%;">Total Time</th>
-                        </tr>
-                    </thead>
-                    <tbody style="width: 100%;" id="all_timeslots">
-                    <tbody>
-                </table>
+                <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="time" id="end_time" onchange="numSlotsChanged()" name="end_time" value="15:00" />
+                    <label class="mdl-textfield__label" for="end_time">End Time</label>
+                </div>
+
+                <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="number" id="number_of_time_slots" onfocus="onFocusOnNumSlots()" value="1" onchange="numSlotsChanged()" min="1" max="20" />
+                    <label class="mdl-textfield__label" for="number_of_time_slots">Number of Slots</label>
+                </div>
+
+                <div>
+                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="numSlotsChanged()"><i style="margin-right: 8px;" class="material-icons">view_list</i>View Slots</button>
+                </div>
 
                 <div style="margin-top: 16px; margin-bottom: 16px;">
-                    <button style="display: none;" type="button" id="hide_slots_button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="hideSlots()"><i style="margin-right: 8px;" class="material-icons">visibility_off</i>Hide Slots</button>
+                    <table style="display: none;" id="timeslots_container" class="full mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                        <caption>All time slots</caption>
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric full">Time slot number</th>
+                                <th class="mdl-data-table__cell--non-numeric full" style="width: 100%;">Start time</th>
+                                <th class="mdl-data-table__cell--non-numeric full" style="width: 100%;">End Time</th>
+                                <th class="mdl-data-table__cell--non-numeric full" style="width: 100%;">Total Time</th>
+                            </tr>
+                        </thead>
+                        <tbody style="width: 100%;" id="all_timeslots">
+                        <tbody>
+                    </table>
+
+                    <div style="margin-top: 16px; margin-bottom: 16px;">
+                        <button style="display: none;" type="button" id="hide_slots_button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="hideSlots()"><i style="margin-right: 8px;" class="material-icons">visibility_off</i>Hide Slots</button>
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                <button id="submit-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="button"><i style="margin-right: 8px;" class="material-icons">done</i>Submit</button>
-            </div>
+                <div id="p" style="display: none;">
+                    <h6 id="p-text">Creating new time slots. PLease wait!</h6>
+                    <div style="margin-top: 16px; margin-bottom: 16px;" id="p-load" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+                </div>
 
-        </form>
+                <div>
+                    <button id="submit-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="button"><i style="margin-right: 8px;" class="material-icons">done</i>Submit</button>
+                </div>
+
+            </form>
+
+            </div>
 
     </div>
 
@@ -249,6 +257,9 @@
         width: 100%;
     }
 </style>
+
+<script src="{% static 'script/calendar.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/calendar-styles.css' %}" />
 
 {% endblock %}
 

@@ -33,6 +33,15 @@
     <Compile Include="app\admin.py" />
     <Compile Include="app\apps.py" />
     <Compile Include="app\forms.py" />
+    <Compile Include="app\helpers\email_helper.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\helpers\middlewares.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\helpers\professor_student.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\migrations\0001_initial.py" />
     <Compile Include="app\migrations\__init__.py" />
     <Compile Include="app\models.py" />
@@ -48,20 +57,49 @@
   <ItemGroup>
     <Content Include="app\migrations\__pycache__\0001_initial.cpython-36.pyc" />
     <Content Include="app\migrations\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="app\static\script\add_time_slots.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\static\script\all_appointments.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\static\script\all_time_slots.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\static\script\index.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\static\script\layouts\drawer\drawer.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\templates\base\root_layout.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\templates\common\all_time_slots_2.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\templates\professor_view\add_time_slots_2.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Scheduling_Website\static\css\calendar-styles.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\static\script\base-script.js" />
-    <Content Include="app\static\script\calendar.js">
+    <Content Include="app\static\script\calendar-old.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\templates\about.html" />
     <Content Include="app\templates\all_suggestions.html" />
-    <Content Include="app\templates\base\backbone.html">
+    <Content Include="app\templates\base\base.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="app\templates\base\base.html" />
     <Content Include="app\templates\base\layout.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\templates\base\privacy_policy.html" />
+    <Content Include="app\static\script\calendar.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\templates\contact.html" />
     <Content Include="app\templates\help.html" />
     <Content Include="app\templates\index.html" />
@@ -88,6 +126,7 @@
     <Content Include="requirements.txt" />
     <Content Include="Scheduling_Website\static\css\main.css" />
     <Content Include="Scheduling_Website\static\humans.txt" />
+    <Content Include="Scheduling_Website\static\images\profile\profile-pic.png" />
     <Content Include="templates\registration\logged_out.html" />
     <Content Include="templates\registration\login.html" />
     <Content Include="templates\registration\password_reset_complete.html" />
@@ -101,8 +140,11 @@
     <Folder Include="app\" />
     <Folder Include="app\migrations\" />
     <Folder Include="app\migrations\__pycache__\" />
+    <Folder Include="app\helpers\" />
     <Folder Include="app\static\" />
     <Folder Include="app\static\script\" />
+    <Folder Include="app\static\script\layouts\" />
+    <Folder Include="app\static\script\layouts\drawer\" />
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\base\" />
     <Folder Include="app\templates\common\" />
@@ -113,6 +155,8 @@
     <Folder Include="Scheduling_Website\" />
     <Folder Include="Scheduling_Website\static\" />
     <Folder Include="Scheduling_Website\static\css\" />
+    <Folder Include="Scheduling_Website\static\images\" />
+    <Folder Include="Scheduling_Website\static\images\profile\" />
     <Folder Include="templates\" />
     <Folder Include="templates\registration\" />
   </ItemGroup>

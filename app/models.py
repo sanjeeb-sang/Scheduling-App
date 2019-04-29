@@ -53,12 +53,11 @@ class Appointment(models.Model):
         return str(hour) + ":" + mins
     
     def __str__(self):
-        return self.user_email
-    def save_data(self, post_values, user):
-
-        self.professor_name = post_values['professor_name']
-        self.professor_email = post_values['professor_email']
-        self.user_name = user.username
+        return self.professor_name + " at " + self.user_email
+    def save_data(self, post_values, user, prof_user, prof_object):
+        self.professor_name = prof_object.title + " " + prof_user.first_name + " " + prof_user.last_name;
+        self.professor_email = prof_user.email;
+        self.user_name = user.first_name + " " + user.last_name
         self.user_email = user.email
         self.date = self.clean_date(post_values['date'])
         self.start_time = self.clean_time(post_values['start_time'])
@@ -73,7 +72,7 @@ class TimeSlot(models.Model):
     end_time = models.TimeField()
 
     def __str__(self):
-        return self.date + " at " + self.start_time
+        return self.professor_name + " on " + self.date + " at " + self.start_time
 
     def save_data(self, p_name, p_email, start, end, date):
         self.professor_name = p_name
@@ -82,9 +81,25 @@ class TimeSlot(models.Model):
         self.start_time = start
         self.end_time = end
 
-class Date(models.Model):
+class Professor(models.Model):
 
-    date = models.DateField()
+    email = models.EmailField();
+    title = models.CharField(max_length = 10, default = "Dr. ");
 
-    def save_date(self, d):
-        date = d;
+    def __str__(self):
+        return self.email
+
+class Student(models.Model):
+
+    email = models.EmailField();
+
+    def __str__(self):
+        return self.email
+
+class ProfessorStudent(models.Model):
+
+    student_email = models.EmailField();
+    professor_email = models.EmailField();
+
+    def __str__(self):
+        return "Professor - " + self.professor_email + " Student - " + self.student_email;

@@ -1,0 +1,112 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block main_content %}
+
+<link rel="stylesheet" href="{% static 'css/calendar-styles.css' %}" />
+
+<script>
+    var PROFESSOR_EMAIL = '{{ user.email }}';
+    var csrfToken = '{{csrf_token}}';
+</script>
+
+<div class="mdl-grid" style="min-height: 80%;">
+
+
+    <div class="center mdl-cell mdl-cell--8-col">
+
+        <div class="mdl-grid mdl-color--indigo-400 mdl-color-text--white mdl-shadow--4dp center" style="margin-bottom: 16px; padding: 16px; background-color: #EEEEEE;">
+
+            <div class="mdl-cell mdl-cell--8-col">
+                <h3>Add Time Slot</h3>
+            </div>
+
+            <div class="mdl-cell mdl-cell--4-col" style="padding-top: 16px;">
+
+                <a href="{% url 'timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">add</i>New</button></a>
+
+                <a href="{% url 'all_appointments' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">view_list</i>Appointments</button></a>
+
+            </div>
+
+        </div>
+
+        <div id="calendar"></div>
+        <script src="{% static 'script/calendar.js' %}"></script>
+
+
+        <div class="mdl-color--white mdl-shadow--4dp" style="padding: 16px; margin-top: 16px;">
+
+            <form id="form" method="POST" action="{% url 'timeslots' %}">
+
+                <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="time" id="start_time" onchange="numSlotsChanged()" name="start_time" value="13:00" />
+                    <label class="mdl-textfield__label" for="start_time">Start Time</label>
+                </div>
+
+                <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="time" id="end_time" onchange="numSlotsChanged()" name="end_time" value="15:00" />
+                    <label class="mdl-textfield__label" for="end_time">End Time</label>
+                </div>
+
+                <div class="full mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="number" id="number_of_time_slots" onfocus="onFocusOnNumSlots()" value="1" onchange="numSlotsChanged()" min="1" max="20" />
+                    <label class="mdl-textfield__label" for="number_of_time_slots">Number of Slots</label>
+                </div>
+
+                <div>
+                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="numSlotsChanged()"><i style="margin-right: 8px;" class="material-icons">view_list</i>View Slots</button>
+                </div>
+
+                <div id="timeslots_container" style="margin-top: 16px; margin-bottom: 16px;">
+                    <div id="slots-root-container"></div>
+                    <div style="margin-top: 16px; margin-bottom: 16px;">
+                        <button style="display: none;" type="button" id="hide_slots_button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="hideSlots()"><i style="margin-right: 8px;" class="material-icons">visibility_off</i>Hide Slots</button>
+                    </div>
+                </div>
+
+                <div id="p" style="display: none;">
+                    <h6 id="p-text">Creating new time slots. PLease wait!</h6>
+                    <div style="margin-top: 16px; margin-bottom: 16px;" id="p-load" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+                </div>
+
+                <div style="margin-top: 16px;">
+                    <button id="submit-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="button"><i style="margin-right: 8px;" class="material-icons">done</i>Submit</button>
+                </div>               
+
+            </form>
+
+        </div>
+
+        <div style="margin-top: 32px;" id="root" />
+
+    </div>
+
+</div>
+
+
+<style>
+    .full {
+        width: 100%;
+        font-size: 20px;
+    }
+    
+</style>
+
+<script src="{% static 'script/add_time_slots.js' %}"></script>
+<script src="{% static 'script/all_time_slots.js' %}"></script>
+
+{% for timeslot in timeslots %}
+    <script>
+        slot = new Slot("{{ timeslot.date }}", "{{ timeslot.start_time }}", "{{ timeslot.end_time }}", "{{ timeslot.id }}");
+        slots.push(slot);
+        slotsMap.set(slot.id, slot);
+    </script>
+{% endfor %}
+<script>
+    handleSlots();
+</script>
+
+
+{% endblock %}
+

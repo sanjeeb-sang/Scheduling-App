@@ -55,4 +55,7 @@ urlpatterns = [
     url(r'all_appointments/$', views.all_appointments, name='all_appointments'),
 
     url(r'appointments/delete/(?P<id>\d+)$', views.delete_appointment, name='delete_appointment'),
+    
+    url(r'send_remainder_emails/$', views.send_remainder_emails, name='send_remainder_emails'),
+
 ]
