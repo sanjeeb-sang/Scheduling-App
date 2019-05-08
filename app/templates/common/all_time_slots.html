@@ -6,6 +6,8 @@
 
 <script>
     var csrfToken = "{{csrf_token}}";
+    var PROFESSOR_EMAIL = "{{ professor_email }}";
+    var STATUS = "{{ request.session.status }}";
 </script>
 
 
@@ -21,108 +23,31 @@
 
     <div class="mdl-cell mdl-cell--8-col center">
 
-        <div class="mdl-grid mdl-color--indigo-400 mdl-color-text--white mdl-shadow--4dp center" style="margin-bottom: 16px; padding: 16px; background-color: #EEEEEE;">
+        <div id="title-header"></div>
+        <script src="{% static 'script/layouts/headers/header.js' %}"></script>
 
-            <div class="mdl-cell mdl-cell--8-col">
-                <h3>Select a Time Slot</h3>
-            </div>
+        <div id="calendar"></div>
 
-            <div class="mdl-cell mdl-cell--4-col" style="padding-top: 16px;">
+        <script src="{% static 'script/calendar.js' %}"></script>
 
-                <a href="{% url 'timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">add</i>New</button></a>
+        <div style="margin-top: 32px;" id="root"></div>
 
-                <a href="{% url 'all_appointments' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">view_list</i>Appointments</button></a>
+        <script src="{% static 'script/all_time_slots.js' %}" ></script>
 
-            </div>
-
-        </div>
-
-        <div id="p" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="width: 100%; height: 8px; display: none;"></div>
-
-        <div id="root"></div>
-
-        <script>
-            var slots = [];
-            var dates = [];
-            var dateToSlotsMap = new Map();
-            var slotsMap = new Map();
-            function Slot(d, s, e, id) {
-                this.date = d;
-                this.startTime = s;
-                this.endTime = e;
-                this.id = id;
-            }
-
-            function timeSlotClicked(d, s, e, id) {
-                var p = document.getElementById("p");
-                p.style.display = "block";
-                $.post('/appointments/', {
-                    "professor_name": "Dr. Lon Smith",
-                    "professor_email": "smith@ulm.edu",
-                    "date": d,
-                    "start_time": s,
-                    "end_time": e,
-                    "timeslot_id": id,
-                    "csrfmiddlewaretoken": csrfToken
-                }, function (data, status) {
-                    p.style.display = "none";
-                    setTimeout(function () {
-                        window.location.href = "/all_appointments/";
-                    }, 300);
-                }, 'json');
-            }
-            function createDateCard(date) {
-                var root = document.getElementById('root');
-                root.innerHTML += `<div id="` + date + `" class="change-background mdl-color--white mdl-shadow--4dp"><h6 style="padding: 16px 16px 16px;" class="mdl-color--blue mdl-color-text--white">` +
-                    `<div style="display: inline-block; width: 95%;"><i class="material-icons" style="color: white; font-size: 24px; margin-right: 8px;">account_box</i>` + date +
-                    `</div><div style="display: inline-block; width: 3%;"></div></h6></div>`;
-            }
-            function slotClicked(id) {
-                var slot = slotsMap.get(id);
-                timeSlotClicked(slot.date, slot.startTime, slot.endTime, slot.id);
-            }
-            function addTime(slot) {
-                var root = document.getElementById(slot.date);
-                var onclick = `onclick="slotClicked('` + slot.id + `');"`;
-                root.innerHTML += `<div id='` + slot.id + `'><h6><i class="material-icons" style="font-size: 24px; margin-right: 8px;">reorder</i>` + slot.startTime + ` to ` + slot.endTime + `<button style="margin-left: 32px;" class="mdl-button mdl-js-button mdl-button--raised" ` + onclick + `><i class="material-icons">done</i>Select</button><a href="/timeslots/delete/` + slot.id + `"><button style="margin-left: 16px;" class="mdl-button mdl-js-button mdl-button--raised"><i class="material-icons">delete_forever</i>Delete</button></a></h6></div><hr />`;
-            }
-        </script>
-
-        {% for timeslot in timeslots %}
-        <script>
-            slot = new Slot("{{ timeslot.date }}", "{{ timeslot.start_time }}", "{{ timeslot.end_time }}", "{{ timeslot.id }}");
-            slots.push(slot);
-            slotsMap.set(slot.id, slot);
-        </script>
-        {% endfor %}
-        <script>
-            var map = new Map();
-            for (var i = 0; i < slots.length; i++) {
-                var slot = slots[i];
-                if (map.has(slot.date)) {
-                    var arr = Array.from(map.get(slot.date));
-                    arr.push(slot);
-                    map.set(slot.date, arr);
-                } else {
-                    var arr = new Array();
-                    arr.push(slot);
-                    map.set(slot.date, arr);
-                }
-            }
-            var keys = map.keys();
-            var key = keys.next();
-            while (!key.done) {
-                var arr = map.get(key.value);
-                createDateCard(key.value)
-                for (var j = 0; j < arr.length; j++) {
-                    var slot = arr[j];
-                    addTime(slot);
-                }
-                key = keys.next();
-            }
+         <script>
+            {% for timeslot in timeslots %}
+       
+                slot = new Slot("{{ timeslot.date }}", "{{ timeslot.start_time }}", "{{ timeslot.end_time }}", "{{ timeslot.id }}");
+                slots.push(slot);
+                slotsMap.set(slot.id, slot);
+            {% endfor %}
+            setHeader("All Timeslots", "/timeslots/", "add", "New");
+            handleSlots();
         </script>
 
     </div>
 
 </div>
+<link rel="stylesheet" href="{% static 'css/calendar-styles.css' %}" />
+
 {% endblock %}

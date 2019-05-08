@@ -21,21 +21,8 @@
 
     <div class="mdl-cell mdl-cell--8-col center">
 
-        <div class="mdl-grid mdl-color--indigo-400 mdl-color-text--white mdl-shadow--4dp center" style="margin-bottom: 16px; padding: 16px; background-color: #EEEEEE;">
-
-            <div class="mdl-cell mdl-cell--8-col">
-                <h3>Appointments</h3>
-            </div>
-
-            <div class="mdl-cell mdl-cell--4-col" style="padding-top: 16px;">
-
-                <a href="{% url 'all_timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">add</i>New</button></a>
-
-                <a href="{% url 'all_timeslots' %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><i class="material-icons" style="margin-right: 8px;">view_list</i>Timeslots</button></a>
-
-            </div>
-
-        </div>
+        <div id="title-header"></div>
+        <script src="{% static 'script/layouts/headers/header.js' %}"></script>
 
         <div style="margin-bottom: 32px;" id="calendar"></div>
         <script src="{% static 'script/calendar.js' %}"></script>
@@ -49,8 +36,9 @@
 <script src="{% static 'script/all_time_slots.js' %}"></script>
 <script src="{% static 'script/all_appointments.js' %}"></script>
 
+<script>
 {% for a in appointments %}
-    <script>
+   
         var slot = new Slot("{{ a.date }}", "{{ a.start_time }}", "{{ a.end_time }}", "{{ a.id }}");
         slots.push(slot);
         slotsMap.set(slot.id, slot);
@@ -59,9 +47,8 @@
         var title = {% if request.session.status == "professor" %}"{{ a.user_name }}"{% endif %}{% if request.session.status == "student" %}"{{ a.professor_name }}"{% endif %};
         var appointment = new Appointment(slot, email_contact, title);
         all_appointments.set(slot.id, appointment);
-    </script>
 {% endfor %}
-<script>
+    setHeader("All Appointments", "/all_timeslots/", "add", "New");
     handleSlots();
 </script>
 

@@ -40,6 +40,7 @@ class Appointment(models.Model):
         return str(year) + "-" + str(MONTHS.index(month) + 1) + "-" + str(day)
 
     def clean_time (self, time):
+        time = time.replace("noon", "12:00 p.m")
         list = time.split(" ");
         t = list[0]
         timeList = t.split(":")
@@ -50,6 +51,8 @@ class Appointment(models.Model):
         pmOrAm = list[1]
         if "p.m" in pmOrAm:
             hour += 12;
+        if hour == 24:
+            hour -= 12;
         return str(hour) + ":" + mins
     
     def __str__(self):
@@ -72,7 +75,7 @@ class TimeSlot(models.Model):
     end_time = models.TimeField()
 
     def __str__(self):
-        return self.professor_name + " on " + self.date + " at " + self.start_time
+        return self.professor_name
 
     def save_data(self, p_name, p_email, start, end, date):
         self.professor_name = p_name

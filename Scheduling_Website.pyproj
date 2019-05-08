@@ -36,6 +36,9 @@
     <Compile Include="app\helpers\email_helper.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="app\helpers\form_handlers\timeslots_handler.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\helpers\middlewares.py">
       <SubType>Code</SubType>
     </Compile>
@@ -72,13 +75,16 @@
     <Content Include="app\static\script\layouts\drawer\drawer.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\static\script\layouts\headers\header.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\templates\base\root_layout.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="app\templates\common\all_time_slots_2.html">
+    <Content Include="app\templates\common\all_time_slots.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="app\templates\professor_view\add_time_slots_2.html">
+    <Content Include="app\templates\professor_view\add_time_slots.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Scheduling_Website\static\css\calendar-styles.css">
@@ -105,12 +111,6 @@
     <Content Include="app\templates\index.html" />
     <Content Include="app\templates\legal_information.html" />
     <Content Include="app\templates\privacy_policy.html" />
-    <Content Include="app\templates\professor_view\add_time_slot.html">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="app\templates\common\all_time_slots.html">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="app\templates\profile.html" />
     <Content Include="app\templates\student_view\add_appointment.html">
       <SubType>Code</SubType>
@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
+    <Folder Include="app\helpers\form_handlers\" />
     <Folder Include="app\migrations\" />
     <Folder Include="app\migrations\__pycache__\" />
     <Folder Include="app\helpers\" />
@@ -145,6 +146,7 @@
     <Folder Include="app\static\script\" />
     <Folder Include="app\static\script\layouts\" />
     <Folder Include="app\static\script\layouts\drawer\" />
+    <Folder Include="app\static\script\layouts\headers\" />
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\base\" />
     <Folder Include="app\templates\common\" />

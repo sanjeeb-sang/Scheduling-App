@@ -4,7 +4,7 @@ from django.utils.deprecation import MiddlewareMixin
 from app.helpers.professor_student import *
 from app.models import ProfessorStudent
 
-dontRedirectOn = ["accounts", "signup"]
+dontRedirectOn = ["accounts", "signup", "confirm", "remainder"]
 
 class AuthRequiredMiddleware(MiddlewareMixin):
 

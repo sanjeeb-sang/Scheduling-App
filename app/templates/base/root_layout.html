@@ -40,15 +40,15 @@
 
                 <div class="mdl-layout-spacer"></div>
 
-                {% if user.is_authenticated %}
-                <a class="mdl-navigation__link" href="{% url 'profile' %}">Hello, {{ user.username }}</a>
-                {% endif %}
-
                 <!-- Navigation -->
                 <nav class="mdl-navigation mdl-layout--large-screen-only">
+                    {% if user.is_authenticated %}
+                    <a class="mdl-navigation__link" href="{% url 'profile' %}">Hello, {{ user.username }}</a>
+                    {% endif %}
                     <li id="a_options" class="mdl-navigation__link"><div style="cursor: pointer;">Appointments<span style="margin-left: 4px;"><i class="material-icons" style="color: white;">keyboard_arrow_down</i></span></div></li>
                     <li id="t_options" class="mdl-navigation__link"><div style="cursor: pointer;">Timeslots<span style="margin-left: 4px;"><i class="material-icons" style="color: white;">keyboard_arrow_down</i></span></div></li>
                     <a class="mdl-navigation__link" href="{% url 'index' %}">Home</a>
+                    {% if request.session.status == "professor" %}<a class="mdl-navigation__link" href="/admin/">Admin</a>{% endif %}
                     {% if user.is_authenticated %}
                     <a class="mdl-navigation__link" href="{% url 'logout' %}">Log Out</a>
                     {% else %}
@@ -70,14 +70,22 @@
                     <i class="material-icons" style="width: 24px; height: 24px;">more_vert</i>
                 </button>
 
-
                 <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
-                    <a href="{% url 'index' %}"><li class="mdl-menu__item">Home</li></a>
+                    <a href="{% url 'index' %}"><li class="mdl-menu__item"><i class="material-icons" style="margin-right: 8px; color: dimgrey;">home</i>Home</li></a>
+                    {% if request.session.status == "professor" %}<a href="/admin/"><li class="mdl-menu__item"><i class="material-icons" style="margin-right: 8px; color: dimgrey;">assessment</i>Admin</li></a>{% endif %}
+                    <a href="{% url 'all_appointments' %}"><li class="mdl-menu__item"><i class="material-icons" style="margin-right: 8px; color: dimgrey;">done_all</i>View all appointments</li></a>
+                    {% if request.session.status == "student" %}
+                    <a href="{% url 'appointments' %}"><li class="mdl-menu__item"><i class="material-icons" style="margin-right: 8px; color: dimgrey;">add</i>Set a new Appointment</li></a>{% endif %}
+                    <a href="{% url 'all_timeslots' %}"><li class="mdl-menu__item"><i class="material-icons" style="margin-right: 8px; color: dimgrey;">done_all</i>View all timeslots</li></a>
+                    {% if request.session.status == "professor" %}
+                    <a href="{% url 'timeslots' %}"><li class="mdl-menu__item"><i class="material-icons" style="margin-right: 8px; color: dimgrey;">add</i>Add New Timeslots</li></a>{% endif %}
                     {% if user.is_authenticated %}
-                    <a class="mdl-navigation__link" href="{% url 'logout' %}">Log Out</a>
+                    <a href="{% url 'profile' %}"><li class="mdl-menu__item"><i class="material-icons" style="margin-right: 8px; color: dimgrey;">view_list</i>View Profile</li></a>
+                    <a href="{% url 'logout' %}"><li class="mdl-menu__item"><i class="material-icons" style="margin-right: 8px; color: dimgrey;">remove_circle</i>Log Out</li></a>
                     {% else %}
-                    <a class="mdl-navigation__link" href="{% url 'login' %}">Log In</a>
+                    <a href="{% url 'login' %}">Log In</a>
                     {% endif %}
+
                 </ul>
             </div>
 

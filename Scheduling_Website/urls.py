@@ -34,6 +34,10 @@ urlpatterns = [
       
     url(r'^signup/$', views.signup, name = 'signup'),
 
+    url(r'^confirm_email/$', views.confirm_email, name = 'confirm_email'),
+
+    url(r'^login/$', views.login_user),
+
     url('accounts/', include('django.contrib.auth.urls')),
 
     url(r'^profile/$', views.profile, name='profile'),
@@ -57,5 +61,7 @@ urlpatterns = [
     url(r'appointments/delete/(?P<id>\d+)$', views.delete_appointment, name='delete_appointment'),
     
     url(r'send_remainder_emails/$', views.send_remainder_emails, name='send_remainder_emails'),
+
+    url(r'confirm/(?P<code>\S+)/(?P<username>\S+)$', views.delete_appointment, name='delete_appointment'),
 
 ]

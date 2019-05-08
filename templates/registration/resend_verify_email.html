@@ -1,0 +1,36 @@
+{% extends 'base/layout.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="mdl-grid" style="min-height: 80%; padding-top: 32px;">
+
+    <div class="mdl-color--white mdl-cell mdl-cell--6-col mdl-shadow--4dp center" style="padding: 16px;">
+
+        <h4>Send verification email!</h4>
+        <p>Enter your username below, and we'll email a new verification email.</p>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mdl-textfield mdl-js-textfield" style="width: 100%;">
+                <input style="width: 100%;" class="mdl-textfield__input" type="text" id="username" name="username">
+                <label class="mdl-textfield__label" for="email">Username...</label>
+            </div>
+            <div style="margin-top: 32px;">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit"><i class="material-icons" style="margin-right: 8px;">send</i>Send Instructions</button>
+            </div>
+        </form>
+
+        {% if user.is_authenticated %}
+        <div style="margin-top: 16px;">
+
+            <p><a href="{% url 'index' %}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"><i class="material-icons">home</i>Go To Home Page</a></p>
+
+        </div>
+        {% endif %}
+
+
+    </div>
+</div>
+
+
+{% endblock %}

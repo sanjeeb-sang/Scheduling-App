@@ -153,10 +153,10 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 
 # username 
-EMAIL_HOST_USER = "keepr.mobile.app@gmail.com"
+EMAIL_HOST_USER = "scheduling.remainder@gmail.com"
 
 # password
-EMAIL_HOST_PASSWORD = "messibarca"
+EMAIL_HOST_PASSWORD = "messimessi"
 
 # use_tls
 EMAIL_USE_TLS = True

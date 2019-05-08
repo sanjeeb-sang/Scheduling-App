@@ -2,6 +2,9 @@
 {% load staticfiles %}
 
 {% block content %}
+<script>
+    var csrfToken = '{{csrf_token}}';
+</script>
 
 <div class="mdl-grid" style="min-height: 80%;">
 
@@ -20,9 +23,9 @@
         {% endif %}
         {% endif %}
 
-        <form method="post" action="{% url 'login' %}">
+        <form id="login-form" method="post">
             {% csrf_token %}
-
+            <p id="error" style="display: none; color: deeppink;"></p>
             <span>Username</span>
             <div class="mdl-textfield mdl-js-textfield" style="width: 100%;">
                 <input class="mdl-textfield__input change-form-background" type="text" id="username" name="username">
@@ -53,9 +56,6 @@
 
         </div>
     </div>
-
-
 </div>
-
 
 {% endblock %}

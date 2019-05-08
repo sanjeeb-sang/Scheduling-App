@@ -1,7 +1,12 @@
 #calendar-root {
     position: relative;
 }
-
+.small-screen {
+    visibility: collapse;
+}
+.large-screen {
+    visibility: visible;
+}
 table thead th, table tbody td {
     padding: 16px;
 }
@@ -11,6 +16,11 @@ table thead, table caption {
     padding-bottom: 16px;
     background-color: #1E88E5;
     color: white;
+}
+.t-head {
+    color: #1E88E5; 
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 table thead th {
@@ -31,6 +41,7 @@ table {
     background-color: #FAFAFA;
     border-collapse: collapse;
     cursor: pointer;
+    overflow-x: scroll;
 }
 
 #month, #year {
@@ -50,4 +61,17 @@ table {
 
 #month-box, #year-box {
     padding: 4px;
+}
+
+@media screen and (max-width: 900px) {
+  
+    table thead th, table tbody td {
+        padding: 4px;
+    }
+    .large-screen {
+        visibility: collapse;
+    }
+    .small-screen {
+        visibility: visible;
+    }
 }

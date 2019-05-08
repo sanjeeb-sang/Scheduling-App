@@ -11,8 +11,9 @@ var selectedDate = 0;
 
 function initCalendar() {
 
-    container.innerHTML = `<div id="calendar-root"><table style='width: 100%;' class='mdl-shadow--4dp'><caption>` + getHeaders() + `</caption><thead><th>Sunday</th><th>Monday</th><th>Tuesday</th>` +
-        `<th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></thead><tbody id="c-body"></tbody></table></div>`;
+    container.innerHTML = `<div id="calendar-root"><table style='width: 100%;' class='mdl-shadow--4dp'><caption>` + getHeaders() + `</caption>`
+         + `<thead class="large-screen"><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></thead>`
+         + `<tbody id="c-body"></tbody></table></div>`;
     month = document.getElementById("month");
     year = document.getElementById("year");
 }
@@ -35,7 +36,8 @@ function loadCalendar(date) {
     var current = 1;
     var d = 1;
     var addFirst = false;
-    var html = "<tr>";
+    
+    var html = `<tr class="small-screen t-head"><td>S</td><td>M</td><td>T</td><td>W</td><td>Th</td><td>F</td><td>Sa</td></tr><tr>`;
 
     while (!stop) {
         if (!addFirst) {

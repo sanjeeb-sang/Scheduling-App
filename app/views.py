@@ -6,17 +6,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 import json
 from django.http import JsonResponse
-from app.helpers.email_helper import MassEmailSender 
+from app.helpers.email_helper import MassEmailSender, ConfirmationEmailSender
 
 # Create your views here.
 
 def index(request):
-    data = {'title' : 'Home'}
-    status = request.session['status'];
-    data['status'] = status
-    if (status == 'student'):
-        data['professor_email'] = request.session['professor_email']
-    return render(request, 'index.html', data)
+    return render(request, 'index.html', {'title' : 'Home'})
  
 def contact(request):
     return render(request, 'contact.html', {'title' : 'Contact'})
@@ -82,12 +77,34 @@ def signup(request):
 
         if form.is_valid():
             user = form.save()
+            user.save();
             login(request, user);
             return redirect('index');
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form, "title" : "Sign Up"})
 
+def verify_email(request):
+    return render(request, "registration/verify_email.html", {"title" : "Verify Email"})
+
+def confirm_email(request, username, code):
+
+    user = User.objects.get(username = username);
+    if (user.get_profile().confirmation_code == code):
+        user.is_active = True;
+        user.save();
+
+def login_user(request):
+    print(1);
+    if request.method == "POST":
+        username = request.POST["username"];
+        password = request.POST["password"];
+        user = authenticate(username = username, password = password)
+        if user is not None:
+            print(2);
+            login(request, user);
+            return JsonResponse({"result" : "OK"});
+        return JsonResponse({"result" : "Error"});
 
 def profile(request):
 
@@ -99,7 +116,7 @@ def timeslots(request):
     if request.method == 'GET':
         slots = TimeSlot.objects.order_by("-date", "-start_time")
         # If the method is get, then just display the suggestion page
-        return render(request, 'professor_view/add_time_slots_2.html', {'title' : 'Add time slot', "timeslots" : slots})
+        return render(request, 'professor_view/add_time_slots.html', {'title' : 'Add time slot', "timeslots" : slots})
     else:
         # slots = json.loads(request.POST.get("slots", ""))
         startTimes = request.POST.getlist("startTimes[]")
@@ -126,9 +143,21 @@ def timeslots(request):
     
 def all_timeslots(request):
 
-    slots = TimeSlot.objects.order_by("-date", "-start_time")
-
-    return render(request, 'common/all_time_slots_2.html', {'timeslots' : slots, "title" : "All TimeSlots"})
+    status = request.session["status"];
+    slots = []
+    if status == "professor":
+         slots = TimeSlot.objects.filter(professor_email = request.user.email);
+         slots.order_by("-date", "-start_time");
+    elif status == "student":
+        try:
+            prof = ProfessorStudent.objects.get(student_email = request.user.email);
+            slots = TimeSlot.objects.filter(professor_email = prof.professor_email);
+            slots.order_by("-date", "-start_time");
+        except ProfessorStudent.DoesNotExist:
+            slots = []
+    else:
+        slots = []    
+    return render(request, 'common/all_time_slots.html', {'timeslots' : slots, "title" : "All TimeSlots"})
 
 
 def delete_timeslot(request, id):
@@ -136,18 +165,12 @@ def delete_timeslot(request, id):
     TimeSlot.objects.get(id=id).delete()
 
     return redirect('/all_timeslots/')
-
-def get_all_timeslots(request):
-
-    slots = TimeSlot.objects.order_by('start_time')
-
-    return render(request, 'common/all_time_slots.html', {'timeslots' : slots, "title" : "All TimeSlots"})
    
 
 def appointments(request):
 
     if request.method == 'GET':
-        return redirect("/all_appointments/")
+        return redirect("/all_timeslots/")
 
     else:
         # slots = json.loads(request.POST.get("slots", ""))
@@ -155,7 +178,7 @@ def appointments(request):
         if (appointments.count() > 0):
             return JsonResponse({"result" : "Error"});
         appointment = Appointment();
-        profRel = ProfessorStudent.objects.get(student_email = request.user.email);
+        profRel = ProfessorStudent.objects.filter(student_email = request.user.email)[0];
         prof = Professor.objects.get(email = profRel.professor_email);
         profUser = User.objects.get(email = profRel.professor_email)
         appointment.save_data(request.POST, request.user, profUser, prof);

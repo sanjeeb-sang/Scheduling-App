@@ -4,6 +4,7 @@ var slots = [];
 var dates = [];
 var datesToSlotsMap = new Map();
 var slotsMap = new Map();
+var calendar_data = "";
 
 function Slot(d, s, e, id) {
     this.date = d;
@@ -29,7 +30,7 @@ function timeSlotClicked(d, s, e, id) {
     }, 'json');
 }
 function handleDate(date) {
-    onHandleDate();
+    onHandleDate(date);
     var root = document.getElementById('root');
     if (root != null) {
         root.innerHTML = `<div id="` + date + `" class="change-background mdl-color--white mdl-shadow--4dp"><h5 style="padding: 32px 16px 32px 32px;" class="mdl-color--blue mdl-color-text--white">` +
@@ -156,7 +157,7 @@ function cleanDate(d) {
 }
 
 function onCalendarDateClicked(data) {
-    var date = MONTHS[data.month] + " " + data.date + ", " + data.year;
+    var date = getFullDate(data);
     handleDate(date);
 }
 
@@ -164,7 +165,19 @@ function init() {
 
 }
 
-// This function can be overridden in other scripts
-function onHandleDate() {
+function getDatesToSlotsMap() {
+    return datesToSlotsMap;
+}
 
+function getFullDate(data) {
+    if (data != null) {
+        calendar_data = data;
+    }
+    console.log(calendar_data);
+    return MONTHS[calendar_data.month] + " " + calendar_data.date + ", " + calendar_data.year;
+}
+
+// This function can be overridden in other scripts
+function onHandleDate(data) {
+    
 }

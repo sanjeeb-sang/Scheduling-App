@@ -5,7 +5,7 @@
 
 <div class="mdl-layout__drawer mdl-color--primary" style="height: 100%; overflow-x: hidden;">
 
-    <nav class="mdl-navigation mdl-color--primary-600" style="list-style: none; height: 100%; width: 100%; color: white; padding-top: 0px;">
+    <nav class="mdl-navigation mdl-color--primary-300" style="list-style: none; height: 100%; width: 100%; color: white; padding-top: 0px;">
 
         <header class="mdl-color--indigo-700" style="height: 150px; width: 100%; margin-bottom: 24px; cursor: pointer;">
 
@@ -38,6 +38,12 @@
             <a class="nav-link-2" href="{% url 'all_appointments' %}"><li class="mdl-color-text--white"><i class="material-icons" style="margin-right: 8px;">list</i>View All</li></a>
             {% if request.session.status == "student" %}<a class="nav-link-2" style="padding-top: 8px;" href="{% url 'appointments' %}"><li class="mdl-color-text--white"><i class="material-icons" style="margin-right: 8px;">add</i>Add</li></a>{% endif %}
         </div>
+
+        {% if request.session.status == "professor" %}
+        <a class="nav-link" href="/admin/">
+            <div><i class="drawer-icons material-icons mdl-color-text--white">announcement</i><span class="drawer-text">Admin</span></div>
+        </a>
+        {% endif %}
 
         <div class="mdl-layout-spacer"></div>
 

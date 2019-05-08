@@ -77,17 +77,92 @@ function getTimeSlots() {
     var slots = numOfSlots.value;
     var start = startTime.value;
     var end = endTime.value;
+    if (start == end) {
+        return [];
+    }
     var totalTime = getTimeDifference(start, end);
     var slotTime = totalTime / slots;
 
     var current = start;
-
+    var alreadyAddedTimes = getDatesToSlotsMap().get(getFullDate());
+    if (alreadyAddedTimes != null) {
+        var arr = Array.from(alreadyAddedTimes);
+        arr.sort(compareTwoTimeslots);
+    }
     for (var i = 0; i < slots; i++) {
-        result.push(new Timeslot(current, addToTime(current, 0, slotTime), slotTime));
+        var newSlot = new Timeslot(current, addToTime(current, 0, slotTime), slotTime);
+        if (arr != null) {
+            var slotsCollide = false;
+            for (var j = 0; j < arr.length; j++) {
+                var slot = arr[j];
+                var collide = doSlotsCollide(slot, newSlot);
+                if (collide) {
+                    slotsCollide = true;
+                    console.log("Collide ")
+                    break;
+                }
+            }
+            if (!slotsCollide) {
+                result.push(newSlot);
+                console.log("Added new Slot " + newSlot);
+            }
+        } else {
+            result.push(newSlot);
+            console.log("Added new Slot " + newSlot);
+        }
+        
         current = addToTime(current, 0, slotTime);
     }
     console.log(result);
     return result;
+}
+
+function doSlotsCollide(slot, timeslot) {
+    var t1s = cleanTime(timeslot.start);
+    var t1e = cleanTime(timeslot.end);
+    var t2s = cleanTime(slot.startTime);
+    var t2e = cleanTime(slot.endTime);
+
+    var t1CompletesBeforeT2 = (t1e.hour < t2s.hour) || (t1e.hour == t2s.hour && t1e.mins <= t2s.mins);
+    
+    var t1CompletesAfterT2 = (t1s.hour > t2e.hour) || (t1s.hour == t2e.hour && t1s.mins >= t2e.mins)
+
+    var collide = !(t1CompletesAfterT2 || t1CompletesBeforeT2);
+    console.log(collide);
+    return collide;
+}
+
+function cleanTime(time) {
+    if (time.includes("noon")) {
+        time = "12 p.m.";
+    }
+    if (time.includes("a") || time.includes("p")) {
+        var listWithPmOrAm = time.split(" ");
+        var pmOrAM = listWithPmOrAm[1];
+        var hourAndMins = listWithPmOrAm[0].split(":");
+        var hour = parseInt(hourAndMins[0]);
+        if (pmOrAM.includes("p")) {
+            hour += 12;
+        }
+        var mins = 0;
+        if (hourAndMins.length > 1) {
+            mins = parseInt(hourAndMins[1]);
+        }
+        return new Time(hour, mins);
+    } else {
+        var list = time.split(":");
+        var hour = parseInt(list[0]);
+        var mins = 0;
+        if (list.length > 1) {
+            mins = parseInt(list[1]);
+        }
+        return new Time(hour, mins);
+    }
+}
+
+function Time(hour, mins) {
+    this.hour = hour;
+    this.mins = mins;
 }
 
 function Timeslot(start, end, slotTime) {
@@ -167,10 +242,8 @@ function setUpSubmit() {
 
 document.onload = initialize();
 
-function onCalendarDateClicked(data) {
-    console.log("/--/");
-}
 
 function initialize() {
     setUpSubmit();
 }
+
